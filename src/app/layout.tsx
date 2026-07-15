@@ -14,14 +14,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Klarr Rank",
+    default: "Audit SEO Teknis Gratis untuk Website | Klarr Rank",
     template: "%s · Klarr Rank",
   },
   description:
-    "AI-powered SEO analyzer, rank tracker, and affordable SEO subscription for Indonesian websites.",
+    "Audit SEO teknis dalam hitungan menit: skor, isu terprioritas, dan langkah perbaikan berbahasa Indonesia. Tanpa kartu kredit di paket Free.",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: [{ url: "/apple-icon" }],
+  },
+  openGraph: {
+    title: "Audit SEO Teknis Gratis untuk Website | Klarr Rank",
+    description:
+      "Bukan sekadar skor. Dapatkan prioritas masalah, alasan dampaknya, dan langkah perbaikan yang jelas.",
+    type: "website",
+    locale: "id_ID",
   },
 };
 

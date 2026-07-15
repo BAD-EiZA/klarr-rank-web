@@ -30,8 +30,8 @@ export function FloatingNavbar({
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition",
         scrolled
-          ? "border-b border-border bg-background/90 shadow-[var(--shadow)] backdrop-blur-md"
-          : "bg-transparent",
+          ? "border-b border-border bg-background/95 shadow-[var(--shadow)] backdrop-blur-md"
+          : "border-b border-transparent bg-background/70 backdrop-blur-sm",
         className,
       )}
     >
@@ -46,12 +46,12 @@ export function FloatingNavbar({
           Klarr Rank
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Utama">
           {navItems.map((item) => (
             <Link
               key={item.link}
               href={item.link}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-text-secondary transition hover:bg-surface hover:text-text-primary"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-text-primary/85 transition hover:bg-surface hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
             >
               {item.name}
             </Link>
@@ -59,11 +59,11 @@ export function FloatingNavbar({
         </nav>
 
         <div className="flex items-center gap-2">
-          <LoginLink className="hidden rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary sm:inline-flex">
+          <LoginLink className="hidden min-h-[44px] items-center rounded-lg px-3 py-2 text-sm font-medium text-text-primary/90 hover:text-text-primary sm:inline-flex">
             Masuk
           </LoginLink>
-          <RegisterLink className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground shadow-sm transition hover:opacity-90">
-            Audit Gratis
+          <RegisterLink className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground shadow-sm transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring">
+            Audit website gratis
           </RegisterLink>
         </div>
       </div>
