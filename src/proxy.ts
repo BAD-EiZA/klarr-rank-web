@@ -13,6 +13,7 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/scans/:path*",
+    "/history/:path*",
     "/rank-trackers/:path*",
     "/account/:path*",
     "/onboarding/:path*",

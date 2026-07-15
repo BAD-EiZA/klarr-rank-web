@@ -7,8 +7,10 @@ import { syncLocalUser } from "@/lib/api/server";
 const nav = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/scans", label: "Scans" },
+  { href: "/history", label: "History" },
   { href: "/rank-trackers", label: "Rank Tracker" },
   { href: "/account", label: "Account" },
+  { href: "/admin", label: "Admin" },
 ];
 
 export default async function DashboardLayout({
