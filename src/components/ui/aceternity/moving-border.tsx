@@ -33,16 +33,20 @@ export function MovingBorderButton({
         className="absolute inset-0 rounded-full"
         style={{
           background:
-            "conic-gradient(from 0deg, transparent 0 240deg, #535C91 280deg, #9290C3 320deg, transparent 360deg)",
+            "conic-gradient(from 0deg, transparent 0 240deg, #96B6C5 280deg, #ADC4CE 320deg, transparent 360deg)",
         }}
       >
         <motion.div
           className={cn("absolute inset-[-100%]", borderClassName)}
           animate={{ rotate: 360 }}
-          transition={{ duration: duration / 1000, repeat: Infinity, ease: "linear" }}
+          transition={{
+            duration: duration / 1000,
+            repeat: Infinity,
+            ease: "linear",
+          }}
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0 240deg, #535C91 280deg, #9290C3 320deg, transparent 360deg)",
+              "conic-gradient(from 0deg, transparent 0 240deg, #96B6C5 280deg, #ADC4CE 320deg, transparent 360deg)",
           }}
         />
       </div>

@@ -1,52 +1,55 @@
 @import "tailwindcss";
 
-/* ColorHunt: https://colorhunt.co/palette/070f2b1b1a55535c919290c3
-   #070F2B #1B1A55 #535C91 #9290C3 */
+/* ColorHunt: https://colorhunt.co/palette/96b6c5adc4ceeee0c9f1f0e8
+   #96B6C5 #ADC4CE #EEE0C9 #F1F0E8 */
 
 :root {
-  --background: #070f2b;
-  --foreground: #f4f3ff;
-  --surface: #1b1a55;
-  --border: #535c91;
-  --text-primary: #f4f3ff;
-  --text-secondary: #9290c3;
-  --accent: #9290c3;
-  --accent-foreground: #070f2b;
-  --success: #4ade80;
-  --warning: #fbbf24;
-  --critical: #f87171;
-  --info: #9290c3;
-  --focus-ring: #9290c3;
-  --brand: #1b1a55;
-  --brand-deep: #070f2b;
-  --brand-mid: #535c91;
-  --brand-soft: #9290c3;
+  --background: #f1f0e8;
+  --foreground: #2a3540;
+  --surface: #ffffff;
+  --surface-soft: #eee0c9;
+  --border: #adc4ce;
+  --text-primary: #2a3540;
+  --text-secondary: #5a6b75;
+  --accent: #96b6c5;
+  --accent-foreground: #1f2a32;
+  --success: #3d8b5f;
+  --warning: #c4891a;
+  --critical: #c44b4b;
+  --info: #6a8fa0;
+  --focus-ring: #96b6c5;
+  --brand: #96b6c5;
+  --brand-deep: #6a8fa0;
+  --brand-mid: #adc4ce;
+  --brand-soft: #eee0c9;
   --radius: 0.75rem;
-  --shadow: 0 1px 2px rgb(7 15 43 / 0.5), 0 12px 32px rgb(7 15 43 / 0.45);
+  --shadow: 0 1px 2px rgb(42 53 64 / 0.06), 0 10px 28px rgb(42 53 64 / 0.08);
   --duration: 200ms;
 }
 
 .dark {
-  --background: #070f2b;
-  --foreground: #f4f3ff;
-  --surface: #1b1a55;
-  --border: #535c91;
-  --text-primary: #f4f3ff;
-  --text-secondary: #9290c3;
-  --accent: #9290c3;
-  --accent-foreground: #070f2b;
+  --background: #2a3540;
+  --foreground: #f1f0e8;
+  --surface: #3a4752;
+  --surface-soft: #4a5863;
+  --border: #6a8fa0;
+  --text-primary: #f1f0e8;
+  --text-secondary: #adc4ce;
+  --accent: #96b6c5;
+  --accent-foreground: #1f2a32;
   --success: #4ade80;
   --warning: #fbbf24;
   --critical: #f87171;
-  --info: #9290c3;
-  --focus-ring: #9290c3;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.45), 0 12px 32px rgb(0 0 0 / 0.4);
+  --info: #adc4ce;
+  --focus-ring: #96b6c5;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 10px 28px rgb(0 0 0 / 0.3);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
   --color-border: var(--border);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
@@ -103,12 +106,12 @@ body {
   background-image:
     linear-gradient(
       to right,
-      color-mix(in oklab, var(--border) 45%, transparent) 1px,
+      color-mix(in oklab, var(--border) 55%, transparent) 1px,
       transparent 1px
     ),
     linear-gradient(
       to bottom,
-      color-mix(in oklab, var(--border) 45%, transparent) 1px,
+      color-mix(in oklab, var(--border) 55%, transparent) 1px,
       transparent 1px
     );
 }

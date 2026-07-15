@@ -32,10 +32,10 @@ export function BackgroundBeams({ className }: { className?: string }) {
             key={i}
             d={path}
             stroke={`url(#beam-${i})`}
-            strokeOpacity="0.35"
+            strokeOpacity="0.4"
             strokeWidth="0.5"
             initial={{ pathLength: 0.2, opacity: 0.3 }}
-            animate={{ pathLength: 1, opacity: [0.2, 0.5, 0.2] }}
+            animate={{ pathLength: 1, opacity: [0.2, 0.55, 0.2] }}
             transition={{
               duration: 6 + i,
               repeat: Infinity,
@@ -54,9 +54,9 @@ export function BackgroundBeams({ className }: { className?: string }) {
               x2="100%"
               y2="100%"
             >
-              <stop stopColor="#1B1A55" stopOpacity="0" />
-              <stop offset="0.5" stopColor="#535C91" />
-              <stop offset="1" stopColor="#9290C3" stopOpacity="0" />
+              <stop stopColor="#96B6C5" stopOpacity="0" />
+              <stop offset="0.5" stopColor="#ADC4CE" />
+              <stop offset="1" stopColor="#EEE0C9" stopOpacity="0" />
             </linearGradient>
           ))}
         </defs>

@@ -23,7 +23,7 @@ export default async function OnboardingPage() {
     }
     return (
       <main className="relative flex min-h-full items-center justify-center overflow-hidden px-4 py-12">
-        <Spotlight className="-top-40 left-0" fill="#9290C3" />
+        <Spotlight className="-top-40 left-0" fill="#96B6C5" />
         <BackgroundBeams className="opacity-40" />
         <div className="relative z-10 w-full max-w-lg">
           <h1 className="text-2xl font-semibold tracking-tight">Onboarding</h1>

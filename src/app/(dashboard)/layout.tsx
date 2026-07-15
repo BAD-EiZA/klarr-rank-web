@@ -65,7 +65,7 @@ export default async function DashboardLayout({
             href="/"
             className="flex items-center gap-2 text-sm font-semibold tracking-tight"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-xs font-bold text-brand-soft ring-1 ring-brand-mid">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-xs font-bold text-accent-foreground ring-1 ring-brand-mid">
               K
             </span>
             Klarr Rank
