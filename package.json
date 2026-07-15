@@ -11,9 +11,14 @@
   },
   "dependencies": {
     "@kinde-oss/kinde-auth-nextjs": "^2.13.0",
+    "@tabler/icons-react": "^3.44.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "motion": "^12.42.2",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

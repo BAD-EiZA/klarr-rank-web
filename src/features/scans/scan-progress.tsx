@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { MultiStepLoader } from "@/components/ui/aceternity/multi-step-loader";
 
 const STEPS = [
   "QUEUED",
@@ -66,39 +67,25 @@ export function ScanProgress({
     };
   }, [scanId, router]);
 
-  const activeIndex = Math.max(
-    0,
-    STEPS.findIndex((s) => s === status),
-  );
+  const current = useMemo(() => {
+    if (status.startsWith("COMPLETED")) return STEPS.length - 1;
+    const idx = STEPS.findIndex((s) => s === status);
+    return Math.max(0, idx);
+  }, [status]);
 
   return (
-    <div className="rounded-2xl border border-border bg-surface p-6">
+    <div className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow)]">
       <h2 className="font-semibold">Memproses audit…</h2>
       <p className="mt-1 text-sm text-text-secondary">
         Status aktual: {LABELS[status] ?? status}
       </p>
-      <ol className="mt-6 space-y-3">
-        {STEPS.map((step, index) => {
-          const done = index < activeIndex || status.startsWith("COMPLETED");
-          const current = step === status;
-          return (
-            <li key={step} className="flex items-center gap-3 text-sm">
-              <span
-                className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
-                  done || current
-                    ? "bg-accent text-accent-foreground"
-                    : "border border-border text-text-secondary"
-                }`}
-              >
-                {index + 1}
-              </span>
-              <span className={current ? "font-medium" : "text-text-secondary"}>
-                {LABELS[step] ?? step}
-              </span>
-            </li>
-          );
-        })}
-      </ol>
+      <div className="mt-6">
+        <MultiStepLoader
+          loading
+          current={current}
+          loadingStates={STEPS.map((s) => ({ text: LABELS[s] ?? s }))}
+        />
+      </div>
     </div>
   );
 }

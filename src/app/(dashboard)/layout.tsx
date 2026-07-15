@@ -1,16 +1,24 @@
 import Link from "next/link";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  IconChartBar,
+  IconHistory,
+  IconLayoutDashboard,
+  IconRadar2,
+  IconSettings,
+  IconShield,
+} from "@tabler/icons-react";
 import { redirect } from "next/navigation";
 import { syncLocalUser } from "@/lib/api/server";
 
 const nav = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/scans", label: "Scans" },
-  { href: "/history", label: "History" },
-  { href: "/rank-trackers", label: "Rank Tracker" },
-  { href: "/account", label: "Account" },
-  { href: "/admin", label: "Admin" },
+  { href: "/dashboard", label: "Dashboard", icon: IconLayoutDashboard },
+  { href: "/scans", label: "Scans", icon: IconRadar2 },
+  { href: "/history", label: "History", icon: IconHistory },
+  { href: "/rank-trackers", label: "Rank Tracker", icon: IconChartBar },
+  { href: "/account", label: "Account", icon: IconSettings },
+  { href: "/admin", label: "Admin", icon: IconShield },
 ];
 
 export default async function DashboardLayout({
@@ -49,32 +57,38 @@ export default async function DashboardLayout({
     "Account";
 
   return (
-    <div className="min-h-full flex flex-col md:flex-row">
-      <aside className="border-b border-border bg-surface md:w-56 md:border-b-0 md:border-r">
-        <div className="flex items-center justify-between px-4 py-5 md:block">
+    <div className="min-h-full bg-background md:flex">
+      <aside className="relative border-b border-border bg-surface/90 backdrop-blur md:sticky md:top-0 md:h-screen md:w-64 md:border-b-0 md:border-r">
+        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+        <div className="relative px-4 py-5">
           <Link href="/" className="text-sm font-semibold tracking-tight">
             Klarr Rank
           </Link>
-          <p className="mt-1 hidden truncate text-xs text-text-secondary md:block">
-            {label}
-          </p>
+          <p className="mt-1 truncate text-xs text-text-secondary">{label}</p>
         </div>
-        <nav className="flex gap-1 overflow-x-auto px-2 pb-3 md:flex-col md:pb-6">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-background hover:text-text-primary"
-            >
-              {item.label}
-            </Link>
-          ))}
-          <LogoutLink className="rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-background hover:text-text-primary">
+        <nav className="relative flex gap-1 overflow-x-auto px-2 pb-4 md:flex-col md:pb-6">
+          {nav.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-background hover:text-text-primary"
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                {item.label}
+              </Link>
+            );
+          })}
+          <LogoutLink className="rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-background hover:text-text-primary">
             Logout
           </LogoutLink>
         </nav>
       </aside>
-      <main className="flex-1 px-4 py-6 md:px-8">{children}</main>
+      <main className="relative flex-1 px-4 py-6 md:px-8">
+        <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-25 [mask-image:radial-gradient(ellipse_at_top,white,transparent_70%)]" />
+        <div className="relative z-10">{children}</div>
+      </main>
     </div>
   );
 }

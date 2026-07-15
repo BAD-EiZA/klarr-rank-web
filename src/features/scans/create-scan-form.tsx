@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/aceternity/button";
+import { Input, Label } from "@/components/ui/aceternity/input";
 
 export function CreateScanForm() {
   const router = useRouter();
@@ -39,26 +41,20 @@ export function CreateScanForm() {
       onSubmit={onSubmit}
       className="rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)]"
     >
-      <label className="block space-y-2 text-sm">
-        <span className="font-medium">URL halaman</span>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <input
-            className="w-full rounded-lg border border-border bg-background px-3 py-2"
-            placeholder="https://example.com"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            required
-            minLength={3}
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="rounded-lg bg-accent px-4 py-2 font-medium text-accent-foreground disabled:opacity-60"
-          >
-            {loading ? "Memulai…" : "Scan"}
-          </button>
-        </div>
-      </label>
+      <Label htmlFor="scan-url">URL halaman</Label>
+      <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+        <Input
+          id="scan-url"
+          placeholder="https://example.com"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          required
+          minLength={3}
+        />
+        <Button type="submit" disabled={loading} className="shrink-0 sm:w-36">
+          {loading ? "Memulai…" : "Scan"}
+        </Button>
+      </div>
       <p className="mt-2 text-xs text-text-secondary">
         Contoh: example.com · hanya HTTP/HTTPS publik
       </p>

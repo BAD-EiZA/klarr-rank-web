@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
+import { HoverBorderGradient } from "@/components/ui/aceternity/hover-border-gradient";
 import { CreateScanForm } from "@/features/scans/create-scan-form";
+import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
 
 type ScanSummary = {
   id: string;
@@ -27,9 +28,14 @@ export default async function ScansPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">SEO Analyzer</h1>
+        <HoverBorderGradient as="div" className="mb-3 text-xs">
+          SEO Analyzer
+        </HoverBorderGradient>
+        <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
+          Audit halaman publik
+        </h1>
         <p className="mt-1 text-sm text-text-secondary">
-          Audit halaman publik. Skor dari rule engine deterministik.
+          Skor dari rule engine deterministik + rekomendasi AI.
         </p>
       </div>
 
@@ -38,16 +44,16 @@ export default async function ScansPage() {
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Riwayat scan</h2>
         {items.length === 0 ? (
-          <div className="rounded-2xl border border-border bg-surface p-6 text-sm text-text-secondary">
+          <div className="rounded-2xl border border-border bg-surface p-8 text-center text-sm text-text-secondary shadow-[var(--shadow)]">
             Belum ada scan. Masukkan URL di atas untuk mulai.
           </div>
         ) : (
-          <ul className="divide-y divide-border rounded-2xl border border-border bg-surface">
+          <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface shadow-[var(--shadow)]">
             {items.map((scan) => (
               <li key={scan.id}>
                 <Link
                   href={`/scans/${scan.id}`}
-                  className="flex flex-col gap-1 px-4 py-3 hover:bg-background sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-1 px-4 py-3 transition hover:bg-background sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
                     <p className="font-medium">{scan.domain}</p>

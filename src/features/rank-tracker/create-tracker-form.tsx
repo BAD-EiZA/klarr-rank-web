@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/aceternity/button";
+import { Input, Label, Select } from "@/components/ui/aceternity/input";
 
 export function CreateTrackerForm() {
   const router = useRouter();
@@ -41,59 +43,48 @@ export function CreateTrackerForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-3 rounded-2xl border border-border bg-surface p-5 sm:grid-cols-2"
+      className="grid gap-3 rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)] sm:grid-cols-2"
     >
-      <label className="space-y-1 text-sm sm:col-span-2">
-        <span className="text-text-secondary">Keyword</span>
-        <input
-          className="w-full rounded-lg border border-border bg-background px-3 py-2"
+      <div className="space-y-1 sm:col-span-2">
+        <Label>Keyword</Label>
+        <Input
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           required
           placeholder="jasa seo jakarta"
         />
-      </label>
-      <label className="space-y-1 text-sm sm:col-span-2">
-        <span className="text-text-secondary">Target URL / domain</span>
-        <input
-          className="w-full rounded-lg border border-border bg-background px-3 py-2"
+      </div>
+      <div className="space-y-1 sm:col-span-2">
+        <Label>Target URL / domain</Label>
+        <Input
           value={targetUrl}
           onChange={(e) => setTargetUrl(e.target.value)}
           required
           placeholder="https://example.com"
         />
-      </label>
-      <label className="space-y-1 text-sm">
-        <span className="text-text-secondary">Negara</span>
-        <input
-          className="w-full rounded-lg border border-border bg-background px-3 py-2"
+      </div>
+      <div className="space-y-1">
+        <Label>Negara</Label>
+        <Input
           value={countryCode}
           maxLength={2}
           onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
         />
-      </label>
-      <label className="space-y-1 text-sm">
-        <span className="text-text-secondary">Device</span>
-        <select
-          className="w-full rounded-lg border border-border bg-background px-3 py-2"
-          value={device}
-          onChange={(e) => setDevice(e.target.value)}
-        >
+      </div>
+      <div className="space-y-1">
+        <Label>Device</Label>
+        <Select value={device} onChange={(e) => setDevice(e.target.value)}>
           <option value="DESKTOP">Desktop</option>
           <option value="MOBILE">Mobile</option>
-        </select>
-      </label>
+        </Select>
+      </div>
       {error ? (
         <p className="text-sm text-critical sm:col-span-2">{error}</p>
       ) : null}
       <div className="sm:col-span-2">
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground disabled:opacity-60"
-        >
+        <Button type="submit" disabled={loading}>
           {loading ? "Menyimpan…" : "Tambah tracker"}
-        </button>
+        </Button>
       </div>
     </form>
   );
