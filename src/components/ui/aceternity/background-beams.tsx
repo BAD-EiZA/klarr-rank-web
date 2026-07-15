@@ -54,9 +54,9 @@ export function BackgroundBeams({ className }: { className?: string }) {
               x2="100%"
               y2="100%"
             >
-              <stop stopColor="#96B6C5" stopOpacity="0" />
-              <stop offset="0.5" stopColor="#ADC4CE" />
-              <stop offset="1" stopColor="#EEE0C9" stopOpacity="0" />
+              <stop stopColor="#0F4C75" stopOpacity="0" />
+              <stop offset="0.5" stopColor="#3282B8" />
+              <stop offset="1" stopColor="#BBE1FA" stopOpacity="0" />
             </linearGradient>
           ))}
         </defs>

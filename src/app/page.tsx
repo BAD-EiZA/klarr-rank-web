@@ -88,7 +88,7 @@ export default function HomePage() {
       <section className="relative px-4 pb-16 pt-28 md:pb-24 md:pt-32">
         <Spotlight
           className="-top-40 left-0 md:-top-20 md:left-40"
-          fill="#96B6C5"
+          fill="#BBE1FA"
         />
         <BackgroundBeams className="opacity-50" />
         <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
