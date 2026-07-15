@@ -33,7 +33,7 @@ export function MovingBorderButton({
         className="absolute inset-0 rounded-full"
         style={{
           background:
-            "conic-gradient(from 0deg, transparent 0 240deg, #3282B8 280deg, #BBE1FA 320deg, transparent 360deg)",
+            "conic-gradient(from 0deg, transparent 0 240deg, #38BDF8 280deg, #A78BFA 320deg, transparent 360deg)",
         }}
       >
         <motion.div
@@ -46,13 +46,13 @@ export function MovingBorderButton({
           }}
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0 240deg, #3282B8 280deg, #BBE1FA 320deg, transparent 360deg)",
+              "conic-gradient(from 0deg, transparent 0 240deg, #38BDF8 280deg, #A78BFA 320deg, transparent 360deg)",
           }}
         />
       </div>
       <div
         className={cn(
-          "relative z-10 flex h-full w-full items-center justify-center rounded-full bg-background px-6 text-sm font-medium text-text-primary",
+          "relative z-10 flex h-full w-full items-center justify-center rounded-full bg-surface px-6 text-sm font-medium text-text-primary",
           className,
         )}
       >

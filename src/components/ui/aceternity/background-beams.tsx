@@ -9,7 +9,6 @@ export function BackgroundBeams({ className }: { className?: string }) {
     "M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867",
     "M-366 -205C-366 -205 -298 200 166 327C630 454 698 859 698 859",
     "M-359 -213C-359 -213 -291 192 173 319C637 446 705 851 705 851",
-    "M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843",
   ];
 
   return (
@@ -32,15 +31,15 @@ export function BackgroundBeams({ className }: { className?: string }) {
             key={i}
             d={path}
             stroke={`url(#beam-${i})`}
-            strokeOpacity="0.4"
+            strokeOpacity="0.25"
             strokeWidth="0.5"
-            initial={{ pathLength: 0.2, opacity: 0.3 }}
-            animate={{ pathLength: 1, opacity: [0.2, 0.55, 0.2] }}
+            initial={{ pathLength: 0.2, opacity: 0.2 }}
+            animate={{ pathLength: 1, opacity: [0.15, 0.35, 0.15] }}
             transition={{
-              duration: 6 + i,
+              duration: 8 + i,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.4,
+              delay: i * 0.5,
             }}
           />
         ))}
@@ -54,9 +53,9 @@ export function BackgroundBeams({ className }: { className?: string }) {
               x2="100%"
               y2="100%"
             >
-              <stop stopColor="#0F4C75" stopOpacity="0" />
-              <stop offset="0.5" stopColor="#3282B8" />
-              <stop offset="1" stopColor="#BBE1FA" stopOpacity="0" />
+              <stop stopColor="#38BDF8" stopOpacity="0" />
+              <stop offset="0.5" stopColor="#38BDF8" />
+              <stop offset="1" stopColor="#A78BFA" stopOpacity="0" />
             </linearGradient>
           ))}
         </defs>

@@ -26,7 +26,7 @@ export function HoverEffect({
           <AnimatePresence>
             {hovered === idx ? (
               <motion.span
-                className="absolute inset-0 block h-full w-full rounded-2xl bg-accent/10"
+                className="absolute inset-0 block h-full w-full rounded-2xl bg-accent/5"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { duration: 0.15 } }}
@@ -34,8 +34,10 @@ export function HoverEffect({
               />
             ) : null}
           </AnimatePresence>
-          <div className="relative z-10 h-full rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)]">
-            {item.icon ? <div className="mb-3 text-accent">{item.icon}</div> : null}
+          <div className="relative z-10 h-full rounded-2xl border border-border bg-surface p-5 transition group-hover:border-accent/40 group-hover:bg-surface-raised">
+            {item.icon ? (
+              <div className="mb-3 text-text-muted">{item.icon}</div>
+            ) : null}
             <h3 className="text-lg font-semibold text-text-primary">{item.title}</h3>
             <p className="mt-2 text-sm text-text-secondary">{item.description}</p>
           </div>

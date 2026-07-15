@@ -54,12 +54,12 @@ export function HeroAuditForm({
             aria-label="URL website"
             aria-invalid={showError}
             aria-describedby="hero-url-help"
-            className="h-12 min-h-[44px] text-base"
+            className="h-12 min-h-[44px] border-border bg-surface text-base text-text-primary placeholder:text-text-muted"
           />
           <RegisterLink
             className={cn(
-              "inline-flex h-12 min-h-[44px] shrink-0 items-center justify-center rounded-xl px-5 text-sm font-semibold shadow-sm transition",
-              "bg-accent text-accent-foreground hover:opacity-90",
+              "inline-flex h-12 min-h-[44px] shrink-0 items-center justify-center rounded-xl px-5 text-sm font-semibold transition",
+              "bg-accent text-accent-foreground shadow-[0_0_24px_rgba(56,189,248,0.18)] hover:bg-accent-hover",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
             )}
           >
@@ -71,14 +71,7 @@ export function HeroAuditForm({
         </p>
         {showError ? (
           <p className="text-sm text-critical" role="alert">
-            Format URL belum valid. Contoh: websiteanda.com atau
-            https://websiteanda.com
-          </p>
-        ) : null}
-        {isValid ? (
-          <p className="text-xs text-text-secondary">
-            Setelah daftar, lanjut audit:{" "}
-            <span className="font-medium text-text-primary">{normalized}</span>
+            Format URL belum valid. Contoh: websiteanda.com
           </p>
         ) : null}
       </div>
@@ -86,7 +79,6 @@ export function HeroAuditForm({
         <li>✓ Tanpa kartu kredit</li>
         <li>✓ Tanpa instalasi</li>
         <li>✓ Hasil awal ±30 detik</li>
-        <li>✓ Data tidak dipublikasikan</li>
       </ul>
     </div>
   );

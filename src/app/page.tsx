@@ -13,7 +13,6 @@ import {
   IconSparkles,
   IconUsers,
 } from "@tabler/icons-react";
-import Link from "next/link";
 import { useState } from "react";
 import { BackgroundBeams } from "@/components/ui/aceternity/background-beams";
 import { BentoGrid, BentoGridItem } from "@/components/ui/aceternity/bento-grid";
@@ -24,50 +23,42 @@ import { Timeline } from "@/components/ui/aceternity/timeline";
 import { DemoReportModal } from "@/features/marketing/demo-report-modal";
 import { HeroAuditForm } from "@/features/marketing/hero-audit-form";
 
-const CTA_PRIMARY = "Audit website gratis";
-const CTA_SECONDARY = "Lihat contoh laporan";
+const CTA = "Audit website gratis";
 
 const faqs = [
   {
-    q: "Apakah Klarr Rank sama dengan Google Lighthouse atau PageSpeed Insights?",
-    a: "Tidak. Lighthouse/PageSpeed fokus pada performa lab. Klarr Rank menggabungkan ekstraksi SEO on-page, skor multi-kategori ber-rule deterministik, prioritas isu, rekomendasi berbahasa Indonesia, dan rank tracking—lalu menyimpan riwayat untuk dibandingkan.",
+    q: "Apakah Klarr Rank sama dengan Lighthouse / PageSpeed Insights?",
+    a: "Tidak. Lighthouse fokus performa lab. Klarr Rank menggabungkan SEO on-page, skor multi-kategori ber-rule deterministik, prioritas isu, rekomendasi berbahasa Indonesia, rank tracking, dan riwayat untuk dibandingkan.",
   },
   {
-    q: "Apakah skor menjamin kenaikan ranking Google?",
-    a: "Tidak. Klarr Rank membantu menemukan hambatan teknis dan peluang perbaikan. Peringkat tetap dipengaruhi konten, otoritas, relevansi, dan persaingan.",
+    q: "Apakah skor menjamin ranking Google naik?",
+    a: "Tidak. Kami membantu menemukan hambatan teknis. Ranking tetap dipengaruhi konten, otoritas, relevansi, dan persaingan.",
   },
   {
-    q: "Apakah audit aman untuk website saya?",
-    a: "Ya. Kami hanya membaca halaman publik (HTTP GET). Kami tidak mengubah konten, tidak menginstal script, dan tidak butuh akses admin website Anda.",
+    q: "Apakah audit aman?",
+    a: "Ya. Hanya membaca halaman publik. Tidak mengubah konten, tidak instal script, tidak butuh akses admin.",
   },
   {
-    q: "Apakah Klarr Rank menyimpan data website?",
-    a: "Hasil audit disimpan di akun Anda agar bisa dibuka ulang dan dibandingkan. Kami tidak menjual data audit dan tidak mempublikasikan URL yang Anda scan.",
+    q: "Apakah data website disimpan?",
+    a: "Hasil audit disimpan di akun Anda. Kami tidak menjual data audit dan tidak mempublikasikan URL yang di-scan.",
   },
   {
-    q: "Apakah website harus milik saya?",
-    a: "Tidak. Anda bisa mengaudit halaman publik mana pun yang bisa dibuka tanpa login. Halaman staging terproteksi atau di balik auth tidak didukung di MVP.",
+    q: "Berapa halaman per audit?",
+    a: "Satu URL per audit—cepat dan kuota jelas. Bukan crawl seluruh domain.",
   },
   {
-    q: "Berapa banyak halaman yang dipindai dalam satu audit?",
-    a: "Satu URL / satu halaman per audit. Ini menjaga hasil cepat dan kuota tetap jelas—bukan crawl seluruh domain.",
-  },
-  {
-    q: "Apakah tersedia export PDF/CSV atau laporan klien?",
-    a: "Belum di MVP. Laporan bisa dibuka di dashboard. Export dan berbagi laporan masuk roadmap setelah billing Pro stabil.",
-  },
-  {
-    q: "Apa yang termasuk paket Pro?",
-    a: "Kuota scan lebih besar (10/hari, 60/periode), 10 keyword, rank check harian, riwayat lebih panjang, dan rekomendasi AI penuh. Harga Pro di halaman ini belum termasuk pajak (ditampilkan saat checkout).",
+    q: "Apa isi paket Pro?",
+    a: "10 scan/hari, 60/periode, 10 keyword, rank harian, riwayat lebih panjang, AI penuh. Harga belum termasuk pajak saat checkout.",
   },
 ];
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [demoOpen, setDemoOpen] = useState(false);
+  const [showCompare, setShowCompare] = useState(false);
 
   return (
-    <main className="relative min-h-full overflow-x-hidden bg-background">
+    <main className="relative min-h-full overflow-x-hidden bg-background text-text-primary">
       <FloatingNavbar
         navItems={[
           { name: "Hasil", link: "#hasil" },
@@ -80,69 +71,65 @@ export default function HomePage() {
       <DemoReportModal open={demoOpen} onClose={() => setDemoOpen(false)} />
 
       {/* Hero */}
-      <section className="relative px-4 pb-12 pt-28 md:pb-16 md:pt-32">
+      <section className="hero-glow relative px-4 pb-12 pt-28 md:pb-16 md:pt-32">
         <Spotlight
-          className="-top-40 left-0 md:-top-20 md:left-40"
-          fill="#BBE1FA"
+          className="-top-40 left-0 md:-top-24 md:left-32"
+          fill="#38BDF8"
         />
-        <BackgroundBeams className="opacity-40" />
-        <div className="relative z-10 mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-2 lg:items-center">
-          <div className="space-y-5">
-            <p className="text-sm font-semibold text-brand-soft">
+        <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-[0.05]" />
+        <div className="relative z-10 mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="max-w-2xl space-y-5">
+            <p className="text-sm font-semibold text-accent">
               Untuk pemilik bisnis, marketer, dan developer
             </p>
-            <h1 className="text-4xl font-bold tracking-tight text-text-primary md:text-5xl lg:leading-[1.12]">
-              Temukan masalah SEO teknis sebelum menghambat pertumbuhan website
-              Anda
+            <h1 className="text-[2.35rem] font-bold leading-[1.15] tracking-tight md:text-5xl lg:text-[3.5rem] lg:leading-[1.1]">
+              Temukan masalah SEO teknis sebelum ranking Anda tertahan
             </h1>
-            <p className="max-w-xl text-base text-text-secondary md:text-lg md:leading-relaxed">
-              Bukan sekadar skor. Dapatkan prioritas masalah, alasan dampaknya,
-              dan langkah perbaikan berbahasa Indonesia—lalu pantau ranking
-              keyword penting.
+            <p className="max-w-xl text-lg leading-relaxed text-text-secondary">
+              Audit satu URL dalam hitungan detik. Dapatkan skor, prioritas
+              masalah, dan langkah perbaikan berbahasa Indonesia.
             </p>
-            <HeroAuditForm ctaLabel={CTA_PRIMARY} />
-            <div className="flex flex-wrap items-center gap-3">
+            <HeroAuditForm ctaLabel={CTA} />
+            <div className="flex flex-wrap items-center gap-4">
               <button
                 type="button"
                 onClick={() => setDemoOpen(true)}
-                className="inline-flex min-h-[44px] items-center text-sm font-semibold text-brand-soft underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                className="inline-flex min-h-[44px] items-center text-sm font-semibold text-text-secondary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
               >
-                {CTA_SECONDARY}
+                Lihat contoh laporan
               </button>
-              <span className="text-sm text-text-secondary">
+              <span className="text-sm text-text-muted">
                 Sudah punya akun?{" "}
-                <LoginLink className="font-medium text-text-primary underline-offset-4 hover:underline">
+                <LoginLink className="font-medium text-text-secondary hover:text-text-primary">
                   Masuk
                 </LoginLink>
               </span>
             </div>
           </div>
 
-          {/* Concrete product proof */}
+          {/* Demo card — neutral surface */}
           <div
             id="preview"
             className="rounded-2xl border border-border bg-surface p-3 shadow-[var(--shadow)] md:p-4"
           >
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2 px-1">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-brand-soft">
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Contoh hasil audit
                 </p>
-                <p className="text-sm font-medium text-text-primary">
-                  demo.klarrank.local · 1 halaman
-                </p>
+                <p className="text-sm font-medium">demo.klarrank.local</p>
               </div>
-              <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold">
-                4 warning · 1 critical
+              <span className="rounded-full border border-border bg-surface-raised px-3 py-1 text-xs font-semibold text-text-secondary">
+                1 critical · 3 warning
               </span>
             </div>
             <div className="rounded-xl border border-border bg-background p-4">
-              <div className="mb-4 flex items-end justify-between gap-3">
+              <div className="mb-4 flex items-end justify-between">
                 <div>
-                  <p className="text-sm text-text-secondary">Overall score</p>
+                  <p className="text-sm text-text-secondary">Overall</p>
                   <p className="text-4xl font-bold tabular-nums">78</p>
                 </div>
-                <p className="text-right text-xs text-text-secondary">
+                <p className="text-right text-xs text-text-muted">
                   Rule set v1.0.0
                   <br />
                   Bukan skor Google
@@ -157,76 +144,68 @@ export default function HomePage() {
                 ].map(([l, v]) => (
                   <div
                     key={l}
-                    className="rounded-lg border border-border/80 bg-surface/40 p-2.5"
+                    className="rounded-lg border border-border bg-surface p-2.5"
                   >
-                    <p className="text-xs text-text-secondary">{l}</p>
+                    <p className="text-xs text-text-muted">{l}</p>
                     <p className="text-lg font-bold tabular-nums">{v}</p>
                   </div>
                 ))}
               </div>
-              <div className="mt-4 rounded-xl border border-warning/40 bg-surface/30 p-3 text-sm">
+              <div className="mt-4 rounded-xl border border-border border-l-2 border-l-warning bg-surface p-3 text-sm">
                 <p className="text-xs font-semibold uppercase tracking-wide text-warning">
                   Warning · dampak sedang · usaha LOW
                 </p>
-                <p className="mt-1 font-semibold text-text-primary">
-                  Meta description hilang
-                </p>
+                <p className="mt-1 font-semibold">Meta description hilang</p>
                 <p className="mt-2 text-text-secondary">
                   <span className="font-medium text-text-primary">Mengapa:</span>{" "}
-                  cuplikan SERP kurang menarik, CTR berisiko turun.
+                  cuplikan SERP kurang menarik.
                 </p>
                 <p className="mt-1 text-text-secondary">
                   <span className="font-medium text-text-primary">Perbaiki:</span>{" "}
-                  tulis deskripsi unik 140–160 karakter (layanan + lokasi +
-                  pembeda).
+                  deskripsi unik 140–160 karakter.
                 </p>
-                <p className="mt-1 text-text-secondary">
-                  <span className="font-medium text-text-primary">Estimasi:</span>{" "}
-                  20–30 menit
-                </p>
+                <p className="mt-1 text-text-muted">Estimasi: 20–30 menit</p>
               </div>
               <button
                 type="button"
                 onClick={() => setDemoOpen(true)}
-                className="mt-3 text-sm font-semibold text-brand-soft underline-offset-4 hover:underline"
+                className="mt-3 text-sm font-semibold text-accent hover:underline"
               >
-                {CTA_SECONDARY} →
+                Lihat contoh laporan →
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Trust / method strip — 3 strong points */}
-      <section className="border-y border-border bg-surface px-4 py-8">
+      {/* Trust — canvas, not blue band */}
+      <section className="border-y border-border-subtle px-4 py-8">
         <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-3">
           {[
             {
               icon: IconRadar2,
-              t: "Audit tanpa instalasi",
-              d: "Cukup URL publik. Tidak butuh plugin atau akses CMS.",
+              t: "Hasil awal ±30 detik",
+              d: "Tanpa instalasi. Cukup URL publik.",
             },
             {
               icon: IconSparkles,
-              t: "Prioritas masalah otomatis",
-              d: "Rule deterministik + urutan dampak, bukan daftar error acak.",
+              t: "Rekomendasi berbahasa Indonesia",
+              d: "Prioritas otomatis, siap dikerjakan.",
             },
             {
               icon: IconLock,
-              t: "Rekomendasi berbahasa Indonesia",
-              d: "Langkah yang bisa dikerjakan owner, marketer, atau developer.",
+              t: "Tidak mengubah website Anda",
+              d: "Read-only. Data tidak dipublikasikan.",
             },
           ].map((item) => (
             <div key={item.t} className="flex gap-3">
               <item.icon
-                className="mt-0.5 h-6 w-6 shrink-0 text-brand-soft"
+                className="mt-0.5 h-5 w-5 shrink-0 text-text-muted"
                 aria-hidden
               />
               <div>
-                <p className="text-base font-semibold text-text-primary">
-                  {item.t}
-                </p>
-                <p className="mt-1 text-sm leading-relaxed text-text-secondary">
+                <p className="text-base font-semibold">{item.t}</p>
+                <p className="mt-1 text-[15px] leading-relaxed text-text-secondary">
                   {item.d}
                 </p>
               </div>
@@ -235,15 +214,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* A. What you get — consolidated */}
-      <section id="hasil" className="mx-auto max-w-6xl px-4 py-16 md:py-20">
-        <h2 className="text-center text-3xl font-bold md:text-4xl">
+      {/* What you get — neutral bento */}
+      <section id="hasil" className="mx-auto max-w-6xl px-4 py-14 md:py-16">
+        <p className="text-center text-sm font-semibold text-accent">Produk</p>
+        <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
           Apa yang Anda dapatkan
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-base leading-relaxed text-text-secondary md:text-lg">
-          Satu audit halaman menghasilkan skor yang bisa dibandingkan, isu
-          terurut, rekomendasi aksi, dan jalur pantau ranking—bukan bungkus
-          ulang Lighthouse.
+        <p className="mx-auto mt-3 max-w-2xl text-center text-lg leading-relaxed text-text-secondary">
+          Skor yang bisa dibandingkan, isu terurut, rekomendasi aksi, dan pantau
+          ranking—bukan bungkus ulang Lighthouse.
         </p>
 
         <div className="mt-10">
@@ -251,104 +230,110 @@ export default function HomePage() {
             <BentoGridItem
               className="md:col-span-2 md:row-span-2"
               title="Dari temuan menjadi tindakan"
-              description="Contoh isu lengkap: masalah, urgensi, dampak, cara perbaiki, estimasi."
+              description="Satu isu lengkap: urgensi, dampak, cara perbaiki, estimasi."
               header={
                 <div className="space-y-2 rounded-xl border border-border bg-background p-3 text-sm">
-                  <p className="text-xs font-semibold uppercase text-critical">
-                    Critical · dampak tinggi
+                  <div className="flex flex-wrap gap-2 text-xs font-semibold">
+                    <span className="rounded-full bg-critical/15 px-2 py-0.5 text-critical">
+                      Critical
+                    </span>
+                    <span className="rounded-full bg-warning/15 px-2 py-0.5 text-warning">
+                      Warning ×3
+                    </span>
+                    <span className="rounded-full bg-success/15 px-2 py-0.5 text-success">
+                      Passed ×12
+                    </span>
+                  </div>
+                  <p className="font-semibold text-critical">
+                    Canonical URL hilang
                   </p>
-                  <p className="font-semibold">Canonical URL hilang</p>
                   <p className="text-text-secondary">
                     Mengapa: risiko konten duplikat diindeks salah.
                   </p>
                   <p className="text-text-secondary">
-                    Perbaiki: set{" "}
-                    <code className="text-brand-soft">&lt;link rel=&quot;canonical&quot;&gt;</code>{" "}
-                    ke URL preferensi.
+                    Perbaiki: set link rel=canonical ke URL preferensi.
                   </p>
-                  <p className="text-text-secondary">Estimasi: 15–45 menit</p>
+                  <p className="text-text-muted">Estimasi: 15–45 menit</p>
+                  <button
+                    type="button"
+                    onClick={() => setDemoOpen(true)}
+                    className="text-sm font-semibold text-accent hover:underline"
+                  >
+                    Lihat detail →
+                  </button>
                 </div>
               }
             />
             <BentoGridItem
-              title="Skor yang mudah dipahami"
-              description="SEO, Performance, Accessibility, Best Practices + overall—rule versioned."
+              title="Skor 78 overall"
+              description="SEO · Perf · A11y · Best — rule versioned."
               header={
-                <div className="flex h-20 items-end rounded-xl bg-background p-3 text-3xl font-bold tabular-nums">
+                <div className="flex h-16 items-end rounded-xl border border-border bg-background p-3 text-3xl font-bold tabular-nums">
                   78
                 </div>
               }
             />
             <BentoGridItem
-              title="Isu terprioritas"
-              description="Critical → Warning → Info. Fokus yang paling berpengaruh dulu."
+              title="Distribusi isu"
+              description="Critical → Warning → Info. Fokus dampak dulu."
               header={
-                <div className="flex h-20 items-center gap-2 rounded-xl bg-background px-3 text-xs font-semibold">
-                  <span className="text-critical">C1</span>
-                  <span className="text-warning">W3</span>
-                  <span className="text-info">I2</span>
+                <div className="flex h-16 items-end gap-1 rounded-xl border border-border bg-background p-3">
+                  <div className="h-8 w-4 rounded-sm bg-critical/80" />
+                  <div className="h-12 w-4 rounded-sm bg-warning/80" />
+                  <div className="h-6 w-4 rounded-sm bg-info/60" />
+                  <div className="h-14 w-4 rounded-sm bg-success/70" />
                 </div>
               }
             />
             <BentoGridItem
               title="Rekomendasi siap dikerjakan"
               description="AI merangkum; laporan teknis tetap ada jika AI gagal."
-              icon={<IconSparkles className="h-5 w-5 text-brand-soft" />}
+              icon={<IconSparkles className="h-5 w-5 text-secondary" />}
             />
             <BentoGridItem
               title="Tracking perkembangan"
-              description="Rescan setelah rilis + pantau keyword (Free 7 hari / Pro harian)."
-              icon={<IconChartBar className="h-5 w-5 text-brand-soft" />}
+              description="Rescan + keyword (Free 7 hari / Pro harian)."
+              icon={<IconChartBar className="h-5 w-5 text-secondary" />}
             />
           </BentoGrid>
         </div>
-
-        <p className="mx-auto mt-6 max-w-3xl text-center text-sm leading-relaxed text-text-secondary">
-          <span className="font-medium text-text-primary">Beda dari Lighthouse:</span>{" "}
-          Klarr Rank menyimpan riwayat, mengurutkan isu SEO on-page, memberi
-          rekomendasi kontekstual, dan menambahkan rank tracking—bukan hanya
-          skor lab sekali jalan.
-        </p>
       </section>
 
-      {/* Report angles — lighter, one section */}
-      <section className="border-y border-border bg-surface/50 px-4 py-14">
+      {/* Report tabs — demo moment */}
+      <section className="border-y border-border-subtle bg-section px-4 py-14">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-center text-2xl font-bold md:text-3xl">
+          <p className="text-center text-sm font-semibold text-accent">
+            Demo laporan
+          </p>
+          <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
             Satu laporan, beberapa sudut pandang
           </h2>
-          <p className="mx-auto mt-2 max-w-2xl text-center text-text-secondary">
-            Tiap skor punya konteks; tab membantu owner dan developer fokus
-            berbeda tanpa tool terpisah.
+          <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-text-secondary">
+            Tiap tab mengubah isi panel—bukan label kosong.
           </p>
-          <div className="mt-8 rounded-2xl border border-border bg-background p-4 md:p-6">
+          <div className="mt-8 rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow)] md:p-6">
             <Tabs
               tabs={[
                 {
                   title: "Overview",
                   value: "overview",
                   content: (
-                    <div className="space-y-3">
-                      <div className="grid gap-2 sm:grid-cols-4">
-                        {[
-                          ["Overall", "78", "Gabungan berbobot"],
-                          ["SEO", "82", "Meta, heading, indexability"],
-                          ["Performance", "71", "Load & transfer"],
-                          ["Accessibility", "76", "Alt, lang, labels"],
-                        ].map(([l, v, tip]) => (
-                          <div
-                            key={l}
-                            className="rounded-xl border border-border p-3"
-                            title={tip}
-                          >
-                            <p className="text-sm text-text-secondary">{l}</p>
-                            <p className="text-2xl font-bold tabular-nums">{v}</p>
-                            <p className="mt-1 text-xs text-text-secondary">
-                              {tip}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="grid gap-2 sm:grid-cols-4">
+                      {[
+                        ["Overall", "78", "Gabungan berbobot"],
+                        ["SEO", "82", "Meta & indexability"],
+                        ["Performance", "71", "Load & transfer"],
+                        ["Accessibility", "76", "Alt, lang, labels"],
+                      ].map(([l, v, tip]) => (
+                        <div
+                          key={l}
+                          className="rounded-xl border border-border bg-background p-4"
+                        >
+                          <p className="text-sm text-text-secondary">{l}</p>
+                          <p className="text-3xl font-bold tabular-nums">{v}</p>
+                          <p className="mt-1 text-xs text-text-muted">{tip}</p>
+                        </div>
+                      ))}
                     </div>
                   ),
                 },
@@ -358,27 +343,19 @@ export default function HomePage() {
                   content: (
                     <ul className="space-y-2 text-sm">
                       {[
-                        ["CRITICAL", "Canonical hilang"],
-                        ["WARNING", "Title terlalu pendek"],
-                        ["WARNING", "Meta description kosong"],
-                        ["INFO", "Beberapa gambar tanpa alt"],
-                      ].map(([sev, title]) => (
+                        ["CRITICAL", "text-critical", "Canonical hilang"],
+                        ["WARNING", "text-warning", "Title terlalu pendek"],
+                        ["WARNING", "text-warning", "Meta description kosong"],
+                        ["INFO", "text-info", "Beberapa gambar tanpa alt"],
+                      ].map(([sev, cls, title]) => (
                         <li
                           key={title}
-                          className="flex flex-wrap items-center gap-2 rounded-xl border border-border px-4 py-3"
+                          className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-background px-4 py-3"
                         >
-                          <span
-                            className={
-                              sev === "CRITICAL"
-                                ? "font-semibold text-critical"
-                                : sev === "WARNING"
-                                  ? "font-semibold text-warning"
-                                  : "font-semibold text-info"
-                            }
-                          >
-                            {sev}
+                          <span className={`font-semibold ${cls}`}>{sev}</span>
+                          <span className="text-text-muted" aria-hidden>
+                            ·
                           </span>
-                          <span aria-hidden>·</span>
                           <span>{title}</span>
                         </li>
                       ))}
@@ -390,20 +367,20 @@ export default function HomePage() {
                   value: "rec",
                   content: (
                     <div className="space-y-2 text-sm">
-                      <div className="rounded-xl border border-border p-4">
+                      <div className="rounded-xl border border-border border-l-2 border-l-accent bg-background p-4">
                         <p className="font-semibold">
                           #1 Tambah meta description
                         </p>
                         <p className="mt-1 text-text-secondary">
-                          Dampak: cuplikan SERP · Usaha: LOW · ~20 menit
+                          Dampak SERP · Usaha LOW · ~20 menit
                         </p>
                       </div>
-                      <div className="rounded-xl border border-border p-4">
+                      <div className="rounded-xl border border-border border-l-2 border-l-secondary bg-background p-4">
                         <p className="font-semibold">
                           #2 Set canonical ke URL preferensi
                         </p>
                         <p className="mt-1 text-text-secondary">
-                          Dampak: indexability · Usaha: MEDIUM · ~30 menit
+                          Indexability · Usaha MEDIUM · ~30 menit
                         </p>
                       </div>
                     </div>
@@ -413,16 +390,14 @@ export default function HomePage() {
                   title: "Rank",
                   value: "rank",
                   content: (
-                    <div className="rounded-xl border border-border p-4 text-sm">
-                      <p className="font-semibold">
-                        keyword: jasa seo jakarta
-                      </p>
+                    <div className="rounded-xl border border-border bg-background p-4 text-sm">
+                      <p className="font-semibold">jasa seo jakarta</p>
                       <p className="mt-2 text-text-secondary">
                         Posisi{" "}
                         <span className="font-semibold text-text-primary">
                           12
                         </span>{" "}
-                        · gerakan{" "}
+                        ·{" "}
                         <span className="font-semibold text-success">+3</span> ·
                         cek harian di Pro
                       </p>
@@ -435,16 +410,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How it works — 3 steps visual */}
-      <section id="how" className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+      {/* How it works */}
+      <section id="how" className="mx-auto max-w-6xl px-4 py-14 md:py-16">
         <div className="grid gap-10 md:grid-cols-2 md:items-start">
           <div>
-            <h2 className="text-3xl font-bold md:text-4xl">Cara kerja</h2>
-            <p className="mt-3 text-base leading-relaxed text-text-secondary md:text-lg">
-              Tiga langkah singkat dari URL ke keputusan perbaikan.
+            <p className="text-sm font-semibold text-accent">Proses</p>
+            <h2 className="mt-2 text-3xl font-bold md:text-4xl">Cara kerja</h2>
+            <p className="mt-3 text-lg leading-relaxed text-text-secondary">
+              Tiga langkah dari URL ke keputusan perbaikan.
             </p>
-            <RegisterLink className="mt-6 inline-flex min-h-[44px] items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">
-              {CTA_PRIMARY}
+            <RegisterLink className="mt-6 inline-flex min-h-[44px] items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover">
+              {CTA}
             </RegisterLink>
           </div>
           <Timeline
@@ -453,202 +429,220 @@ export default function HomePage() {
                 badge: "1",
                 title: "Masukkan URL",
                 description:
-                  "Pilih halaman publik. Normalisasi otomatis; tanpa https juga bisa.",
+                  "Halaman publik. Tanpa https juga bisa—kami normalisasi.",
               },
               {
                 badge: "2",
                 title: "Klarr Rank memindai",
                 description:
-                  "Ekstrak SEO on-page, jalankan rules, hitung skor. Target ±30 detik untuk halaman normal.",
+                  "SEO on-page + rules + skor. Target ±30 detik untuk halaman normal.",
               },
               {
                 badge: "3",
-                title: "Terapkan & audit ulang",
+                title: "Prioritaskan & kerjakan",
                 description:
-                  "Kerjakan prioritas, rescan setelah rilis, pantau keyword penting.",
+                  "Perbaiki, rescan setelah rilis, pantau keyword penting.",
               },
             ]}
           />
         </div>
       </section>
 
-      {/* Personas — sharper */}
-      <section className="border-y border-border bg-surface/40 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-center text-3xl font-bold md:text-4xl">
-            Untuk siapa Klarr Rank?
-          </h2>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {[
-              {
-                icon: IconBuildingStore,
-                t: "Pemilik bisnis / UMKM",
-                d: "Pahami kondisi website tanpa tenggelam di jargon. Dapat prioritas yang bisa didelegasikan ke developer.",
-              },
-              {
-                icon: IconUsers,
-                t: "Marketer & praktisi SEO",
-                d: "Quick wins, bukti isu, riwayat audit, dan gerakan ranking untuk laporan klien.",
-              },
-              {
-                icon: IconCode,
-                t: "Web developer",
-                d: "Daftar isu teknis jelas (meta, heading, a11y, status) untuk verifikasi rilis dan regresi.",
-              },
-            ].map((u) => (
-              <div
-                key={u.t}
-                className="rounded-2xl border border-border bg-background p-6"
-              >
-                <u.icon
-                  className="h-6 w-6 text-brand-soft"
-                  aria-hidden
-                />
-                <h3 className="mt-3 text-lg font-semibold">{u.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-                  {u.d}
-                </p>
-              </div>
-            ))}
+      {/* Personas + method close together */}
+      <section className="border-t border-border-subtle px-4 py-14">
+        <div className="mx-auto max-w-6xl space-y-12">
+          <div>
+            <h2 className="text-center text-3xl font-bold md:text-4xl">
+              Untuk siapa
+            </h2>
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              {[
+                {
+                  icon: IconBuildingStore,
+                  t: "Pemilik bisnis / UMKM",
+                  d: "Prioritas yang bisa didelegasikan—tanpa tenggelam di jargon.",
+                },
+                {
+                  icon: IconUsers,
+                  t: "Marketer & SEO",
+                  d: "Quick wins, bukti isu, riwayat audit, gerakan ranking klien.",
+                },
+                {
+                  icon: IconCode,
+                  t: "Web developer",
+                  d: "Isu teknis jelas untuk verifikasi rilis dan regresi.",
+                },
+              ].map((u) => (
+                <div
+                  key={u.t}
+                  className="rounded-2xl border border-border bg-surface p-6 transition hover:border-accent/40 hover:bg-surface-raised"
+                >
+                  <u.icon className="h-6 w-6 text-text-muted" aria-hidden />
+                  <h3 className="mt-3 text-lg font-semibold">{u.t}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-text-secondary">
+                    {u.d}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-border bg-surface p-6 md:p-8">
+            <h2 className="text-2xl font-bold md:text-3xl">
+              Metode yang bisa dijelaskan
+            </h2>
+            <ul className="mt-4 grid gap-3 text-[15px] leading-relaxed text-text-secondary md:grid-cols-2 md:text-base">
+              <li>
+                <span className="font-semibold text-text-primary">Diperiksa:</span>{" "}
+                meta, heading, links, images, sinyal a11y & best practices.
+              </li>
+              <li>
+                <span className="font-semibold text-text-primary">Sumber:</span>{" "}
+                HTML halaman publik yang Anda masukkan (1 URL).
+              </li>
+              <li>
+                <span className="font-semibold text-text-primary">Tidak:</span>{" "}
+                crawl massal domain, login-protected, backlink DB (MVP).
+              </li>
+              <li>
+                <span className="font-semibold text-text-primary">Privasi:</span>{" "}
+                laporan milik akun; data tidak dijual.
+              </li>
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* Method / trust — honest, no fake stats */}
-      <section className="mx-auto max-w-6xl px-4 py-14">
-        <div className="rounded-2xl border border-border bg-surface/50 p-6 md:p-8">
-          <h2 className="text-2xl font-bold md:text-3xl">
-            Metode yang bisa dijelaskan
-          </h2>
-          <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-text-secondary md:grid-cols-2 md:text-base">
-            <li>
-              <span className="font-semibold text-text-primary">Sumber data:</span>{" "}
-              HTML halaman publik yang Anda masukkan (bukan crawl massal domain).
-            </li>
-            <li>
-              <span className="font-semibold text-text-primary">Skor:</span> rule
-              engine berversi—rescan setelah rilis bisa dibandingkan secara
-              konsisten.
-            </li>
-            <li>
-              <span className="font-semibold text-text-primary">AI:</span> hanya
-              merangkum bukti yang sudah diekstrak; tidak mengarang temuan.
-            </li>
-            <li>
-              <span className="font-semibold text-text-primary">Privasi:</span>{" "}
-              laporan milik akun Anda; kami tidak menjual data audit.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="pricing" className="border-t border-border px-4 py-16 md:py-20">
+      {/* Pricing — cards first */}
+      <section id="pricing" className="border-t border-border-subtle px-4 py-14 md:py-16">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-center text-3xl font-bold md:text-4xl">
-            Harga transparan (IDR)
+          <p className="text-center text-sm font-semibold text-accent">Harga</p>
+          <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
+            Transparan (IDR)
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-text-secondary md:text-lg">
-            Free cukup untuk uji halaman penting. Pro untuk pemantauan rutin.
-            Harga di bawah belum termasuk pajak (jika berlaku saat checkout).
+          <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-text-secondary">
+            Free untuk uji halaman penting. Pro untuk pemantauan rutin.
           </p>
 
-          <div className="mt-10 overflow-x-auto rounded-2xl border border-border bg-background">
-            <table className="w-full min-w-[560px] text-left text-sm">
-              <thead className="border-b border-border bg-surface/60">
-                <tr>
-                  <th className="px-4 py-3 font-semibold">Fitur</th>
-                  <th className="px-4 py-3 font-semibold">Free</th>
-                  <th className="px-4 py-3 font-semibold">
-                    Pro{" "}
-                    <span className="ml-1 rounded-full bg-accent/30 px-2 py-0.5 text-xs font-medium">
-                      pemantauan rutin
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {[
-                  ["Harga", "Rp0", "Rp59.000 / bulan"],
-                  ["Scan / hari", "2", "10"],
-                  ["Scan / 30 hari (Free) atau periode Pro", "10", "60"],
-                  ["Keyword aktif", "2", "10"],
-                  ["Rank otomatis", "Tiap 7 hari", "Harian"],
-                  ["Riwayat audit", "14 hari", "12 bulan"],
-                  ["AI prioritas", "Maks 3 aksi", "Lengkap"],
-                  ["Saat kuota habis", "Tunggu reset / upgrade", "Tunggu reset periode"],
-                  ["Export PDF/CSV", "Belum (MVP)", "Belum (MVP)"],
-                  ["Banyak domain", "Ya, per audit URL", "Ya, per audit URL"],
-                ].map((row) => (
-                  <tr key={row[0]}>
-                    <td className="px-4 py-3 text-text-secondary">{row[0]}</td>
-                    <td className="px-4 py-3 font-medium">{row[1]}</td>
-                    <td className="px-4 py-3 font-medium">{row[2]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-3 text-center text-xs text-text-secondary">
-            Tidak ada biaya tersembunyi di halaman ini. Checkout Pro menyusul
-            (Midtrans). Batalkan perpanjangan kapan saja setelah billing aktif.
-          </p>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-background p-6">
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-border bg-surface p-6">
               <h3 className="text-lg font-semibold">Free</h3>
               <p className="mt-2 text-4xl font-bold">Rp0</p>
-              <p className="mt-2 text-sm text-text-secondary">
-                Cocok untuk coba audit beberapa halaman penting.
-              </p>
-              <RegisterLink className="mt-6 inline-flex min-h-[44px] items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold">
-                {CTA_PRIMARY}
+              <ul className="mt-4 space-y-2 text-[15px] text-text-secondary">
+                <li>• 2 scan / hari · 10 / 30 hari</li>
+                <li>• 2 keyword · cek tiap 7 hari</li>
+                <li>• Riwayat audit 14 hari</li>
+                <li>• AI max 3 prioritas</li>
+              </ul>
+              <RegisterLink className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold hover:border-accent/50">
+                {CTA}
               </RegisterLink>
             </div>
-            <div className="rounded-2xl border border-accent bg-surface/40 p-6">
-              <h3 className="text-lg font-semibold">Pro</h3>
+            <div className="relative overflow-hidden rounded-2xl border border-accent/50 bg-surface p-6 shadow-[0_0_40px_rgba(56,189,248,0.08)]">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-lg font-semibold">Pro</h3>
+                <span className="rounded-full bg-secondary/20 px-2 py-0.5 text-xs font-semibold text-secondary">
+                  Pemantauan rutin
+                </span>
+              </div>
               <p className="mt-2 text-4xl font-bold">
                 Rp59.000
                 <span className="text-base font-normal text-text-secondary">
                   /bulan
                 </span>
               </p>
-              <p className="mt-2 text-sm text-text-secondary">
-                Cocok untuk pemantauan rutin keyword & volume scan lebih besar.
-              </p>
-              <RegisterLink className="mt-6 inline-flex min-h-[44px] items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">
+              <ul className="mt-4 space-y-2 text-[15px] text-text-secondary">
+                <li>• 10 scan / hari · 60 / periode</li>
+                <li>• 10 keyword · cek harian</li>
+                <li>• Riwayat 12 bulan</li>
+                <li>• AI rekomendasi penuh</li>
+              </ul>
+              <RegisterLink className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover">
                 Mulai dari Free dulu
               </RegisterLink>
+              <p className="mt-3 text-center text-xs text-text-muted">
+                Belum termasuk pajak · batalkan perpanjangan kapan saja
+              </p>
             </div>
           </div>
+
+          <div className="mt-6 text-center">
+            <button
+              type="button"
+              onClick={() => setShowCompare((v) => !v)}
+              className="text-sm font-semibold text-text-secondary underline-offset-4 hover:text-accent hover:underline"
+              aria-expanded={showCompare}
+            >
+              {showCompare
+                ? "Sembunyikan perbandingan lengkap"
+                : "Lihat perbandingan lengkap"}
+            </button>
+          </div>
+
+          {showCompare ? (
+            <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-surface">
+              <table className="w-full min-w-[520px] text-left text-sm">
+                <thead className="border-b border-border-subtle">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Fitur</th>
+                    <th className="px-4 py-3 font-semibold">Free</th>
+                    <th className="px-4 py-3 font-semibold">Pro</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-subtle text-text-secondary">
+                  {[
+                    ["Scan / hari", "2", "10"],
+                    ["Scan / periode", "10 / 30 hari", "60"],
+                    ["Keyword", "2", "10"],
+                    ["Rank auto", "7 hari", "Harian"],
+                    ["Riwayat", "14 hari", "12 bulan"],
+                    ["Export PDF/CSV", "Belum (MVP)", "Belum (MVP)"],
+                  ].map((row) => (
+                    <tr key={row[0]}>
+                      <td className="px-4 py-3">{row[0]}</td>
+                      <td className="px-4 py-3 font-medium text-text-primary">
+                        {row[1]}
+                      </td>
+                      <td className="px-4 py-3 font-medium text-text-primary">
+                        {row[2]}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="border-t border-border bg-surface/30 px-4 py-16">
-        <div className="mx-auto max-w-3xl">
+      <section id="faq" className="border-t border-border-subtle px-4 py-14">
+        <div className="mx-auto max-w-[720px]">
           <h2 className="text-center text-3xl font-bold md:text-4xl">FAQ</h2>
-          <div className="mt-10 space-y-2">
+          <div className="mt-8 space-y-2">
             {faqs.map((item, i) => {
               const open = openFaq === i;
               return (
                 <div
                   key={item.q}
-                  className="rounded-2xl border border-border bg-background"
+                  className={`rounded-2xl border border-border ${
+                    open ? "bg-surface-raised" : "bg-surface"
+                  }`}
                 >
                   <button
                     type="button"
-                    className="flex min-h-[48px] w-full items-center justify-between gap-3 px-4 py-3 text-left text-base font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                    className="flex min-h-[48px] w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-base font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
                     onClick={() => setOpenFaq(open ? null : i)}
                     aria-expanded={open}
                   >
                     {item.q}
-                    <span className="text-text-secondary" aria-hidden>
+                    <span className="text-text-muted" aria-hidden>
                       {open ? "−" : "+"}
                     </span>
                   </button>
                   {open ? (
-                    <p className="border-t border-border px-4 py-3 text-sm leading-relaxed text-text-secondary md:text-base">
+                    <p className="border-t border-border-subtle px-4 py-3 text-[15px] leading-relaxed text-text-secondary">
                       {item.a}
                     </p>
                   ) : null}
@@ -659,43 +653,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Closing CTA with URL */}
-      <section className="relative overflow-hidden px-4 py-16 md:py-20">
-        <div className="absolute inset-0 bg-surface/50" />
-        <BackgroundBeams className="opacity-30" />
+      {/* Closing CTA — only other colored section */}
+      <section className="cta-glow relative overflow-hidden px-4 py-16">
+        <BackgroundBeams className="opacity-20" />
         <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center text-center">
           <h2 className="text-3xl font-bold md:text-4xl">
-            Temukan masalah teknis sebelum calon pelanggan menemukannya lebih
-            dulu
+            Temukan masalah teknis sebelum calon pelanggan menemukannya
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-text-secondary md:text-lg">
+          <p className="mx-auto mt-3 max-w-xl text-lg text-text-secondary">
             Masukkan URL dan dapatkan prioritas perbaikan—bukan hanya skor.
           </p>
           <div className="mt-8 w-full max-w-xl text-left">
-            <HeroAuditForm ctaLabel={CTA_PRIMARY} className="max-w-none" />
+            <HeroAuditForm ctaLabel={CTA} className="max-w-none" />
           </div>
           <button
             type="button"
             onClick={() => setDemoOpen(true)}
-            className="mt-4 text-sm font-semibold text-brand-soft underline-offset-4 hover:underline"
+            className="mt-4 text-sm font-semibold text-text-secondary hover:text-accent hover:underline"
           >
-            {CTA_SECONDARY}
+            Lihat contoh laporan
           </button>
         </div>
       </section>
 
-      <footer className="border-t border-border bg-background px-4 py-12">
+      <footer className="border-t border-border-subtle px-4 py-12">
         <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <div className="flex items-center gap-2 font-semibold">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-sm font-bold text-accent-foreground">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0F4C75] text-sm font-bold text-[#BBE1FA]">
                 K
               </span>
               Klarr Rank
             </div>
             <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-              Audit SEO teknis, prioritas perbaikan, dan rank tracker terjangkau
-              untuk website Indonesia.
+              Audit SEO teknis, prioritas perbaikan, rank tracker terjangkau.
             </p>
           </div>
           <div>
@@ -703,17 +694,12 @@ export default function HomePage() {
             <ul className="mt-3 space-y-2 text-sm text-text-secondary">
               <li>
                 <a href="#hasil" className="hover:text-text-primary">
-                  Hasil audit
+                  Hasil
                 </a>
               </li>
               <li>
                 <a href="#pricing" className="hover:text-text-primary">
                   Harga
-                </a>
-              </li>
-              <li>
-                <a href="#how" className="hover:text-text-primary">
-                  Cara kerja
                 </a>
               </li>
               <li>
@@ -742,17 +728,13 @@ export default function HomePage() {
           </div>
           <div>
             <p className="text-sm font-semibold">Legal</p>
-            <ul className="mt-3 space-y-2 text-sm text-text-secondary">
-              <li>
-                <span>Privasi (segera)</span>
-              </li>
-              <li>
-                <span>Syarat (segera)</span>
-              </li>
+            <ul className="mt-3 space-y-2 text-sm text-text-muted">
+              <li>Privasi (segera)</li>
+              <li>Syarat (segera)</li>
             </ul>
           </div>
         </div>
-        <p className="mx-auto mt-10 max-w-6xl text-center text-xs text-text-secondary">
+        <p className="mx-auto mt-10 max-w-6xl text-center text-xs text-text-muted">
           © {new Date().getFullYear()} Klarr Rank. Skor adalah penilaian
           produk, bukan jaminan ranking Google.
         </p>

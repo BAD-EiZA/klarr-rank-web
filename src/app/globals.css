@@ -1,60 +1,78 @@
 @import "tailwindcss";
 
-/* ColorHunt: https://colorhunt.co/palette/1b262c0f4c753282b8bbe1fa
-   #1B262C #0F4C75 #3282B8 #BBE1FA */
+/* Midnight Slate + Signal Cyan (updated-feedback.md)
+   canvas #070B12 · surface #111827 · primary #38BDF8 · secondary #A78BFA */
 
 :root {
-  --background: #1b262c;
-  --foreground: #bbe1fa;
-  --surface: #0f4c75;
-  --surface-soft: #3282b8;
-  --border: #3282b8;
-  --text-primary: #bbe1fa;
-  --text-secondary: #a8c8de;
-  --accent: #3282b8;
-  --accent-foreground: #ffffff;
-  --success: #4ade80;
+  --background: #070b12;
+  --section: #0b1220;
+  --foreground: #f8fafc;
+  --surface: #111827;
+  --surface-raised: #162033;
+  --surface-soft: #162033;
+  --border: #263449;
+  --border-subtle: #1b2738;
+  --text-primary: #f8fafc;
+  --text-secondary: #a8b3c7;
+  --text-muted: #718096;
+  --accent: #38bdf8;
+  --accent-foreground: #082f49;
+  --accent-hover: #0ea5e9;
+  --secondary: #a78bfa;
+  --success: #34d399;
   --warning: #fbbf24;
-  --critical: #f87171;
-  --info: #bbe1fa;
-  --focus-ring: #bbe1fa;
+  --critical: #fb7185;
+  --info: #38bdf8;
+  --focus-ring: #38bdf8;
   --brand: #0f4c75;
-  --brand-deep: #1b262c;
-  --brand-mid: #3282b8;
-  --brand-soft: #bbe1fa;
+  --brand-deep: #070b12;
+  --brand-mid: #263449;
+  --brand-soft: #38bdf8;
   --radius: 0.75rem;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 12px 32px rgb(0 0 0 / 0.35);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
   --duration: 200ms;
 }
 
 .dark {
-  --background: #1b262c;
-  --foreground: #bbe1fa;
-  --surface: #0f4c75;
-  --surface-soft: #3282b8;
-  --border: #3282b8;
-  --text-primary: #bbe1fa;
-  --text-secondary: #a8c8de;
-  --accent: #3282b8;
-  --accent-foreground: #ffffff;
-  --success: #4ade80;
+  --background: #070b12;
+  --section: #0b1220;
+  --foreground: #f8fafc;
+  --surface: #111827;
+  --surface-raised: #162033;
+  --surface-soft: #162033;
+  --border: #263449;
+  --border-subtle: #1b2738;
+  --text-primary: #f8fafc;
+  --text-secondary: #a8b3c7;
+  --text-muted: #718096;
+  --accent: #38bdf8;
+  --accent-foreground: #082f49;
+  --accent-hover: #0ea5e9;
+  --secondary: #a78bfa;
+  --success: #34d399;
   --warning: #fbbf24;
-  --critical: #f87171;
-  --info: #bbe1fa;
-  --focus-ring: #bbe1fa;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.4);
+  --critical: #fb7185;
+  --info: #38bdf8;
+  --focus-ring: #38bdf8;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-section: var(--section);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
   --color-surface-soft: var(--surface-soft);
   --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-hover: var(--accent-hover);
+  --color-secondary: var(--secondary);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-critical: var(--critical);
@@ -84,6 +102,8 @@ body {
   background: var(--background);
   color: var(--text-primary);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 @keyframes spotlight {
@@ -106,12 +126,25 @@ body {
   background-image:
     linear-gradient(
       to right,
-      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      color-mix(in oklab, var(--border) 35%, transparent) 1px,
       transparent 1px
     ),
     linear-gradient(
       to bottom,
-      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      color-mix(in oklab, var(--border) 35%, transparent) 1px,
       transparent 1px
     );
+}
+
+.hero-glow {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.1), transparent 30%),
+    radial-gradient(circle at 80% 10%, rgba(167, 139, 250, 0.08), transparent 28%),
+    var(--background);
+}
+
+.cta-glow {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12), transparent 40%),
+    var(--section);
 }

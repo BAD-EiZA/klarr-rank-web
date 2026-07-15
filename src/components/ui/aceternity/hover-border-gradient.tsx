@@ -36,12 +36,12 @@ export function HoverBorderGradient({
   }, [hovered]);
 
   const map = {
-    TOP: "radial-gradient(20.7% 50% at 50% 0%, #BBE1FA 0%, rgba(27,38,44,0) 100%)",
-    LEFT: "radial-gradient(16.6% 43.1% at 0% 50%, #BBE1FA 0%, rgba(27,38,44,0) 100%)",
+    TOP: "radial-gradient(20.7% 50% at 50% 0%, #38BDF8 0%, rgba(7,11,18,0) 100%)",
+    LEFT: "radial-gradient(16.6% 43.1% at 0% 50%, #38BDF8 0%, rgba(7,11,18,0) 100%)",
     BOTTOM:
-      "radial-gradient(20.7% 50% at 50% 100%, #BBE1FA 0%, rgba(27,38,44,0) 100%)",
+      "radial-gradient(20.7% 50% at 50% 100%, #38BDF8 0%, rgba(7,11,18,0) 100%)",
     RIGHT:
-      "radial-gradient(16.2% 41.2% at 100% 50%, #BBE1FA 0%, rgba(27,38,44,0) 100%)",
+      "radial-gradient(16.2% 41.2% at 100% 50%, #38BDF8 0%, rgba(7,11,18,0) 100%)",
   };
 
   return (
@@ -49,13 +49,13 @@ export function HoverBorderGradient({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "relative flex rounded-full border border-border bg-surface/80 p-px transition duration-300",
+        "relative flex rounded-full border border-border bg-surface p-px transition duration-300",
         containerClassName,
       )}
       {...props}
     >
       <div
-        className="absolute inset-0 rounded-full opacity-70 transition-opacity duration-300"
+        className="absolute inset-0 rounded-full opacity-50 transition-opacity duration-300"
         style={{ background: map[direction] }}
       />
       <div

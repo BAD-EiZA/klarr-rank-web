@@ -58,19 +58,18 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-full bg-background md:flex">
-      <aside className="relative border-b border-border bg-surface/90 backdrop-blur md:sticky md:top-0 md:h-screen md:w-64 md:border-b-0 md:border-r">
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+      <aside className="relative border-b border-border-subtle bg-surface md:sticky md:top-0 md:h-screen md:w-64 md:border-b-0 md:border-r">
         <div className="relative px-4 py-5">
           <Link
             href="/"
             className="flex items-center gap-2 text-sm font-semibold tracking-tight"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-xs font-bold text-accent-foreground ring-1 ring-brand-mid">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#0F4C75] text-xs font-bold text-[#BBE1FA]">
               K
             </span>
             Klarr Rank
           </Link>
-          <p className="mt-1 truncate text-xs text-text-secondary">{label}</p>
+          <p className="mt-1 truncate text-xs text-text-muted">{label}</p>
         </div>
         <nav className="relative flex gap-1 overflow-x-auto px-2 pb-4 md:flex-col md:pb-6">
           {nav.map((item) => {
@@ -79,20 +78,19 @@ export default async function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-background hover:text-text-primary"
+                className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-surface-raised hover:text-text-primary"
               >
-                <Icon className="h-4 w-4 shrink-0" />
+                <Icon className="h-4 w-4 shrink-0 text-text-muted" />
                 {item.label}
               </Link>
             );
           })}
-          <LogoutLink className="rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-background hover:text-text-primary">
+          <LogoutLink className="rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-surface-raised hover:text-text-primary">
             Logout
           </LogoutLink>
         </nav>
       </aside>
       <main className="relative flex-1 px-4 py-6 md:px-8">
-        <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-25 [mask-image:radial-gradient(ellipse_at_top,white,transparent_70%)]" />
         <div className="relative z-10">{children}</div>
       </main>
     </div>
