@@ -1,4 +1,8 @@
 import Link from "next/link";
+import {
+  LoginLink,
+  RegisterLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
 
 const features = [
   {
@@ -42,12 +46,12 @@ export default function HomePage() {
           >
             Harga
           </Link>
-          <Link
-            href="/dashboard"
-            className="rounded-lg bg-accent px-3 py-2 font-medium text-accent-foreground"
-          >
+          <LoginLink className="text-text-secondary hover:text-text-primary">
+            Masuk
+          </LoginLink>
+          <RegisterLink className="rounded-lg bg-accent px-3 py-2 font-medium text-accent-foreground">
             Mulai gratis
-          </Link>
+          </RegisterLink>
         </nav>
       </header>
 
@@ -62,12 +66,9 @@ export default function HomePage() {
             lalu dapatkan rekomendasi prioritas dari AI — tanpa janji ranking palsu.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link
-              href="/dashboard"
-              className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground"
-            >
+            <RegisterLink className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground">
               Audit gratis
-            </Link>
+            </RegisterLink>
             <a
               href="#features"
               className="rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium"
