@@ -20,6 +20,13 @@ import { FloatingNavbar } from "@/components/ui/aceternity/floating-navbar";
 import { Spotlight } from "@/components/ui/aceternity/spotlight";
 import { Tabs } from "@/components/ui/aceternity/tabs";
 import { Timeline } from "@/components/ui/aceternity/timeline";
+import {
+  motion,
+  MotionDiv,
+  MotionSection,
+  StaggerChildren,
+  StaggerItem,
+} from "@/components/ui/motion-section";
 import { DemoReportModal } from "@/features/marketing/demo-report-modal";
 import { HeroAuditForm } from "@/features/marketing/hero-audit-form";
 
@@ -78,7 +85,12 @@ export default function HomePage() {
         />
         <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-[0.05]" />
         <div className="relative z-10 mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-center">
-          <div className="max-w-2xl space-y-5">
+          <motion.div
+            className="max-w-2xl space-y-5"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
             <p className="text-sm font-semibold text-accent">
               Untuk pemilik bisnis, marketer, dan developer
             </p>
@@ -105,12 +117,15 @@ export default function HomePage() {
                 </LoginLink>
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Demo card — neutral surface */}
-          <div
+          <motion.div
             id="preview"
             className="rounded-2xl border border-border bg-surface p-3 shadow-[var(--shadow)] md:p-4"
+            initial={{ opacity: 0, y: 32, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.65, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2 px-1">
               <div>
@@ -174,13 +189,13 @@ export default function HomePage() {
                 Lihat contoh laporan →
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Trust — canvas, not blue band */}
-      <section className="border-y border-border-subtle px-4 py-8">
-        <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-3">
+      <MotionSection className="border-y border-border-subtle px-4 py-8">
+        <StaggerChildren className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-3">
           {[
             {
               icon: IconRadar2,
@@ -198,7 +213,7 @@ export default function HomePage() {
               d: "Read-only. Data tidak dipublikasikan.",
             },
           ].map((item) => (
-            <div key={item.t} className="flex gap-3">
+            <StaggerItem key={item.t} className="flex gap-3">
               <item.icon
                 className="mt-0.5 h-5 w-5 shrink-0 text-text-muted"
                 aria-hidden
@@ -209,21 +224,26 @@ export default function HomePage() {
                   {item.d}
                 </p>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
-      </section>
+        </StaggerChildren>
+      </MotionSection>
 
       {/* What you get — neutral bento */}
-      <section id="hasil" className="mx-auto max-w-6xl px-4 py-14 md:py-16">
-        <p className="text-center text-sm font-semibold text-accent">Produk</p>
-        <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
-          Apa yang Anda dapatkan
-        </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-lg leading-relaxed text-text-secondary">
-          Skor yang bisa dibandingkan, isu terurut, rekomendasi aksi, dan pantau
-          ranking—bukan bungkus ulang Lighthouse.
-        </p>
+      <MotionSection
+        id="hasil"
+        className="mx-auto max-w-6xl px-4 py-14 md:py-16"
+      >
+        <MotionDiv>
+          <p className="text-center text-sm font-semibold text-accent">Produk</p>
+          <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
+            Apa yang Anda dapatkan
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-lg leading-relaxed text-text-secondary">
+            Skor yang bisa dibandingkan, isu terurut, rekomendasi aksi, dan
+            pantau ranking—bukan bungkus ulang Lighthouse.
+          </p>
+        </MotionDiv>
 
         <div className="mt-10">
           <BentoGrid>
@@ -297,21 +317,26 @@ export default function HomePage() {
             />
           </BentoGrid>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Report tabs — demo moment */}
-      <section className="border-y border-border-subtle bg-section px-4 py-14">
+      <MotionSection className="border-y border-border-subtle bg-section px-4 py-14">
         <div className="mx-auto max-w-6xl">
-          <p className="text-center text-sm font-semibold text-accent">
-            Demo laporan
-          </p>
-          <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
-            Satu laporan, beberapa sudut pandang
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-text-secondary">
-            Tiap tab mengubah isi panel—bukan label kosong.
-          </p>
-          <div className="mt-8 rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow)] md:p-6">
+          <MotionDiv>
+            <p className="text-center text-sm font-semibold text-accent">
+              Demo laporan
+            </p>
+            <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
+              Satu laporan, beberapa sudut pandang
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-text-secondary">
+              Tiap tab mengubah isi panel—bukan label kosong.
+            </p>
+          </MotionDiv>
+          <MotionDiv
+            delay={0.08}
+            className="mt-8 rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow)] md:p-6"
+          >
             <Tabs
               tabs={[
                 {
@@ -406,14 +431,17 @@ export default function HomePage() {
                 },
               ]}
             />
-          </div>
+          </MotionDiv>
         </div>
-      </section>
+      </MotionSection>
 
       {/* How it works */}
-      <section id="how" className="mx-auto max-w-6xl px-4 py-14 md:py-16">
+      <MotionSection
+        id="how"
+        className="mx-auto max-w-6xl px-4 py-14 md:py-16"
+      >
         <div className="grid gap-10 md:grid-cols-2 md:items-start">
-          <div>
+          <MotionDiv>
             <p className="text-sm font-semibold text-accent">Proses</p>
             <h2 className="mt-2 text-3xl font-bold md:text-4xl">Cara kerja</h2>
             <p className="mt-3 text-lg leading-relaxed text-text-secondary">
@@ -422,40 +450,42 @@ export default function HomePage() {
             <RegisterLink className="mt-6 inline-flex min-h-[44px] items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover">
               {CTA}
             </RegisterLink>
-          </div>
-          <Timeline
-            items={[
-              {
-                badge: "1",
-                title: "Masukkan URL",
-                description:
-                  "Halaman publik. Tanpa https juga bisa—kami normalisasi.",
-              },
-              {
-                badge: "2",
-                title: "Klarr Rank memindai",
-                description:
-                  "SEO on-page + rules + skor. Target ±30 detik untuk halaman normal.",
-              },
-              {
-                badge: "3",
-                title: "Prioritaskan & kerjakan",
-                description:
-                  "Perbaiki, rescan setelah rilis, pantau keyword penting.",
-              },
-            ]}
-          />
+          </MotionDiv>
+          <MotionDiv delay={0.1}>
+            <Timeline
+              items={[
+                {
+                  badge: "1",
+                  title: "Masukkan URL",
+                  description:
+                    "Halaman publik. Tanpa https juga bisa—kami normalisasi.",
+                },
+                {
+                  badge: "2",
+                  title: "Klarr Rank memindai",
+                  description:
+                    "SEO on-page + rules + skor. Target ±30 detik untuk halaman normal.",
+                },
+                {
+                  badge: "3",
+                  title: "Prioritaskan & kerjakan",
+                  description:
+                    "Perbaiki, rescan setelah rilis, pantau keyword penting.",
+                },
+              ]}
+            />
+          </MotionDiv>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Personas + method close together */}
-      <section className="border-t border-border-subtle px-4 py-14">
+      <MotionSection className="border-t border-border-subtle px-4 py-14">
         <div className="mx-auto max-w-6xl space-y-12">
           <div>
             <h2 className="text-center text-3xl font-bold md:text-4xl">
               Untuk siapa
             </h2>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <StaggerChildren className="mt-8 grid gap-4 md:grid-cols-3">
               {[
                 {
                   icon: IconBuildingStore,
@@ -473,21 +503,24 @@ export default function HomePage() {
                   d: "Isu teknis jelas untuk verifikasi rilis dan regresi.",
                 },
               ].map((u) => (
-                <div
-                  key={u.t}
-                  className="rounded-2xl border border-border bg-surface p-6 transition hover:border-accent/40 hover:bg-surface-raised"
-                >
-                  <u.icon className="h-6 w-6 text-text-muted" aria-hidden />
-                  <h3 className="mt-3 text-lg font-semibold">{u.t}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-text-secondary">
-                    {u.d}
-                  </p>
-                </div>
+                <StaggerItem key={u.t}>
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                    className="h-full rounded-2xl border border-border bg-surface p-6 transition hover:border-accent/40 hover:bg-surface-raised"
+                  >
+                    <u.icon className="h-6 w-6 text-text-muted" aria-hidden />
+                    <h3 className="mt-3 text-lg font-semibold">{u.t}</h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-text-secondary">
+                      {u.d}
+                    </p>
+                  </motion.div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerChildren>
           </div>
 
-          <div className="rounded-2xl border border-border bg-surface p-6 md:p-8">
+          <MotionDiv className="rounded-2xl border border-border bg-surface p-6 md:p-8">
             <h2 className="text-2xl font-bold md:text-3xl">
               Metode yang bisa dijelaskan
             </h2>
@@ -509,63 +542,77 @@ export default function HomePage() {
                 laporan milik akun; data tidak dijual.
               </li>
             </ul>
-          </div>
+          </MotionDiv>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Pricing — cards first */}
-      <section id="pricing" className="border-t border-border-subtle px-4 py-14 md:py-16">
+      <MotionSection
+        id="pricing"
+        className="border-t border-border-subtle px-4 py-14 md:py-16"
+      >
         <div className="mx-auto max-w-6xl">
-          <p className="text-center text-sm font-semibold text-accent">Harga</p>
-          <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
-            Transparan (IDR)
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-text-secondary">
-            Free untuk uji halaman penting. Pro untuk pemantauan rutin.
-          </p>
+          <MotionDiv>
+            <p className="text-center text-sm font-semibold text-accent">
+              Harga
+            </p>
+            <h2 className="mt-2 text-center text-3xl font-bold md:text-4xl">
+              Transparan (IDR)
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-text-secondary">
+              Free untuk uji halaman penting. Pro untuk pemantauan rutin.
+            </p>
+          </MotionDiv>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-surface p-6">
-              <h3 className="text-lg font-semibold">Free</h3>
-              <p className="mt-2 text-4xl font-bold">Rp0</p>
-              <ul className="mt-4 space-y-2 text-[15px] text-text-secondary">
-                <li>• 2 scan / hari · 10 / 30 hari</li>
-                <li>• 2 keyword · cek tiap 7 hari</li>
-                <li>• Riwayat audit 14 hari</li>
-                <li>• AI max 3 prioritas</li>
-              </ul>
-              <RegisterLink className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold hover:border-accent/50">
-                {CTA}
-              </RegisterLink>
-            </div>
-            <div className="relative overflow-hidden rounded-2xl border border-accent/50 bg-surface p-6 shadow-[0_0_40px_rgba(56,189,248,0.08)]">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-lg font-semibold">Pro</h3>
-                <span className="rounded-full bg-secondary/20 px-2 py-0.5 text-xs font-semibold text-secondary">
-                  Pemantauan rutin
-                </span>
+          <StaggerChildren className="mt-10 grid gap-4 md:grid-cols-2">
+            <StaggerItem>
+              <div className="h-full rounded-2xl border border-border bg-surface p-6">
+                <h3 className="text-lg font-semibold">Free</h3>
+                <p className="mt-2 text-4xl font-bold">Rp0</p>
+                <ul className="mt-4 space-y-2 text-[15px] text-text-secondary">
+                  <li>• 2 scan / hari · 10 / 30 hari</li>
+                  <li>• 2 keyword · cek tiap 7 hari</li>
+                  <li>• Riwayat audit 14 hari</li>
+                  <li>• AI max 3 prioritas</li>
+                </ul>
+                <RegisterLink className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold hover:border-accent/50">
+                  {CTA}
+                </RegisterLink>
               </div>
-              <p className="mt-2 text-4xl font-bold">
-                Rp59.000
-                <span className="text-base font-normal text-text-secondary">
-                  /bulan
-                </span>
-              </p>
-              <ul className="mt-4 space-y-2 text-[15px] text-text-secondary">
-                <li>• 10 scan / hari · 60 / periode</li>
-                <li>• 10 keyword · cek harian</li>
-                <li>• Riwayat 12 bulan</li>
-                <li>• AI rekomendasi penuh</li>
-              </ul>
-              <RegisterLink className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover">
-                Mulai dari Free dulu
-              </RegisterLink>
-              <p className="mt-3 text-center text-xs text-text-muted">
-                Belum termasuk pajak · batalkan perpanjangan kapan saja
-              </p>
-            </div>
-          </div>
+            </StaggerItem>
+            <StaggerItem>
+              <motion.div
+                whileHover={{ y: -3 }}
+                className="relative h-full overflow-hidden rounded-2xl border border-accent/50 bg-surface p-6 shadow-[0_0_40px_rgba(56,189,248,0.08)]"
+              >
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-lg font-semibold">Pro</h3>
+                  <span className="rounded-full bg-secondary/20 px-2 py-0.5 text-xs font-semibold text-secondary">
+                    Pemantauan rutin
+                  </span>
+                </div>
+                <p className="mt-2 text-4xl font-bold">
+                  Rp59.000
+                  <span className="text-base font-normal text-text-secondary">
+                    /bulan
+                  </span>
+                </p>
+                <ul className="mt-4 space-y-2 text-[15px] text-text-secondary">
+                  <li>• 10 scan / hari · 60 / periode</li>
+                  <li>• 10 keyword · cek harian</li>
+                  <li>• Riwayat 12 bulan</li>
+                  <li>• AI rekomendasi penuh</li>
+                </ul>
+                <RegisterLink className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover">
+                  Mulai dari Free dulu
+                </RegisterLink>
+                <p className="mt-3 text-center text-xs text-text-muted">
+                  Belum termasuk pajak · batalkan perpanjangan kapan saja
+                </p>
+              </motion.div>
+            </StaggerItem>
+          </StaggerChildren>
 
           <div className="mt-6 text-center">
             <button
@@ -614,18 +661,22 @@ export default function HomePage() {
             </div>
           ) : null}
         </div>
-      </section>
+      </MotionSection>
 
       {/* FAQ */}
-      <section id="faq" className="border-t border-border-subtle px-4 py-14">
+      <MotionSection
+        id="faq"
+        className="border-t border-border-subtle px-4 py-14"
+      >
         <div className="mx-auto max-w-[720px]">
           <h2 className="text-center text-3xl font-bold md:text-4xl">FAQ</h2>
           <div className="mt-8 space-y-2">
             {faqs.map((item, i) => {
               const open = openFaq === i;
               return (
-                <div
+                <motion.div
                   key={item.q}
+                  layout
                   className={`rounded-2xl border border-border ${
                     open ? "bg-surface-raised" : "bg-surface"
                   }`}
@@ -642,19 +693,23 @@ export default function HomePage() {
                     </span>
                   </button>
                   {open ? (
-                    <p className="border-t border-border-subtle px-4 py-3 text-[15px] leading-relaxed text-text-secondary">
+                    <motion.p
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      className="border-t border-border-subtle px-4 py-3 text-[15px] leading-relaxed text-text-secondary"
+                    >
                       {item.a}
-                    </p>
+                    </motion.p>
                   ) : null}
-                </div>
+                </motion.div>
               );
             })}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
-      {/* Closing CTA — only other colored section */}
-      <section className="cta-glow relative overflow-hidden px-4 py-16">
+      {/* Closing CTA */}
+      <MotionSection className="cta-glow relative overflow-hidden px-4 py-16">
         <BackgroundBeams className="opacity-20" />
         <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center text-center">
           <h2 className="text-3xl font-bold md:text-4xl">
@@ -674,7 +729,7 @@ export default function HomePage() {
             Lihat contoh laporan
           </button>
         </div>
-      </section>
+      </MotionSection>
 
       <footer className="border-t border-border-subtle px-4 py-12">
         <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2 md:grid-cols-4">
@@ -734,10 +789,15 @@ export default function HomePage() {
             </ul>
           </div>
         </div>
-        <p className="mx-auto mt-10 max-w-6xl text-center text-xs text-text-muted">
-          © {new Date().getFullYear()} Klarr Rank. Skor adalah penilaian
-          produk, bukan jaminan ranking Google.
-        </p>
+        <div className="mx-auto mt-10 max-w-6xl space-y-2 text-center text-xs text-text-muted">
+          <p>
+            © 2026 Klarr Rank. Skor adalah penilaian produk, bukan jaminan
+            ranking Google.
+          </p>
+          <p className="font-medium text-text-secondary">
+            Copyright © 2026 by BAD-EiZA
+          </p>
+        </div>
       </footer>
     </main>
   );
