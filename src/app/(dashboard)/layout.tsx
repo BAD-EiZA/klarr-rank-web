@@ -61,7 +61,13 @@ export default async function DashboardLayout({
       <aside className="relative border-b border-border bg-surface/90 backdrop-blur md:sticky md:top-0 md:h-screen md:w-64 md:border-b-0 md:border-r">
         <div className="absolute inset-0 bg-grid-pattern opacity-20" />
         <div className="relative px-4 py-5">
-          <Link href="/" className="text-sm font-semibold tracking-tight">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-sm font-semibold tracking-tight"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-xs font-bold text-brand-soft ring-1 ring-brand-mid">
+              K
+            </span>
             Klarr Rank
           </Link>
           <p className="mt-1 truncate text-xs text-text-secondary">{label}</p>

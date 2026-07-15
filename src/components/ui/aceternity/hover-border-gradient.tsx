@@ -34,12 +34,12 @@ export function HoverBorderGradient({
   }, [hovered]);
 
   const map = {
-    TOP: "radial-gradient(20.7% 50% at 50% 0%, #a5b4fc 0%, rgba(255,255,255,0) 100%)",
-    LEFT: "radial-gradient(16.6% 43.1% at 0% 50%, #a5b4fc 0%, rgba(255,255,255,0) 100%)",
+    TOP: "radial-gradient(20.7% 50% at 50% 0%, #9290C3 0%, rgba(7,15,43,0) 100%)",
+    LEFT: "radial-gradient(16.6% 43.1% at 0% 50%, #9290C3 0%, rgba(7,15,43,0) 100%)",
     BOTTOM:
-      "radial-gradient(20.7% 50% at 50% 100%, #a5b4fc 0%, rgba(255,255,255,0) 100%)",
+      "radial-gradient(20.7% 50% at 50% 100%, #9290C3 0%, rgba(7,15,43,0) 100%)",
     RIGHT:
-      "radial-gradient(16.2% 41.2% at 100% 50%, #a5b4fc 0%, rgba(255,255,255,0) 100%)",
+      "radial-gradient(16.2% 41.2% at 100% 50%, #9290C3 0%, rgba(7,15,43,0) 100%)",
   };
 
   return (

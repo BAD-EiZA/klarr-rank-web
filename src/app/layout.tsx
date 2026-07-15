@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   },
   description:
     "AI-powered SEO analyzer, rank tracker, and affordable SEO subscription for Indonesian websites.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon" }],
+  },
 };
 
 export default function RootLayout({

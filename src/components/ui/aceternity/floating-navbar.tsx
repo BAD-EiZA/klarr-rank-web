@@ -24,7 +24,13 @@ export function FloatingNavbar({
         className,
       )}
     >
-      <Link href="/" className="px-2 text-sm font-semibold tracking-tight">
+      <Link
+        href="/"
+        className="flex items-center gap-2 px-2 text-sm font-semibold tracking-tight"
+      >
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-xs font-bold text-brand-soft ring-1 ring-brand-mid">
+          K
+        </span>
         Klarr Rank
       </Link>
       {navItems.map((item) => (

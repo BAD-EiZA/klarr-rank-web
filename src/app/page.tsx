@@ -58,7 +58,7 @@ export default function HomePage() {
 
       {/* Hero free-style section */}
       <section className="relative flex min-h-[90vh] flex-col items-center justify-center px-4 pb-20 pt-28">
-        <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="#a5b4fc" />
+        <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="#9290C3" />
         <BackgroundBeams className="opacity-60" />
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <div className="mb-6 inline-flex">
@@ -239,7 +239,7 @@ export default function HomePage() {
             </RegisterLink>
           </div>
           <div className="relative overflow-hidden rounded-2xl border border-accent bg-surface p-6 shadow-[var(--shadow)]">
-            <Spotlight className="-top-20 left-10 h-[120%] w-[80%]" fill="#818cf8" />
+            <Spotlight className="-top-20 left-10 h-[120%] w-[80%]" fill="#535C91" />
             <div className="relative z-10">
               <h3 className="text-lg font-semibold">Pro</h3>
               <p className="mt-3 text-4xl font-bold">
