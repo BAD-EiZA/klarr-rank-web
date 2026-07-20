@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
 import { ScanProgress } from "@/features/scans/scan-progress";
 import { ScanReport } from "@/features/scans/scan-report";
@@ -90,40 +91,45 @@ export default async function ScanDetailPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-text-secondary">
-            <Link href="/scans" className="hover:text-text-primary">
+          <p className="text-sm text-text-muted">
+            <Link
+              href="/scans"
+              className="hover:text-text-primary hover:underline"
+            >
               Scans
             </Link>{" "}
             / {scan.domain}
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight">
+          <h1 className="mt-1.5 text-2xl font-semibold tracking-tight md:text-3xl">
             {scan.domain}
           </h1>
-          <p className="mt-1 break-all text-sm text-text-secondary">
+          <p className="mt-1.5 break-all text-sm text-text-secondary">
             {scan.finalUrl ?? scan.normalizedUrl}
           </p>
         </div>
         {done && scan.overallScore != null ? (
-          <div className="rounded-2xl border border-border bg-surface px-5 py-3 text-center">
-            <p className="text-xs text-text-secondary">Overall</p>
-            <p className="text-3xl font-semibold tabular-nums">
+          <SurfaceCard className="min-w-[5.5rem] px-5 py-3 text-center">
+            <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-text-muted">
+              Overall
+            </p>
+            <p className="text-3xl font-semibold tabular-nums tracking-tight">
               {scan.overallScore}
             </p>
-          </div>
+          </SurfaceCard>
         ) : null}
       </div>
 
       {!done ? (
         <ScanProgress scanId={scan.id} initialStatus={scan.status} />
       ) : scan.status === "FAILED" ? (
-        <div className="rounded-2xl border border-critical/40 bg-surface p-5">
+        <SurfaceCard className="border-critical/30 p-5">
           <h2 className="font-semibold text-critical">Scan gagal</h2>
           <p className="mt-2 text-sm text-text-secondary">
             {scan.errorCode}: {scan.errorMessage}
           </p>
-        </div>
+        </SurfaceCard>
       ) : (
         <ScanReport scan={scan} />
       )}

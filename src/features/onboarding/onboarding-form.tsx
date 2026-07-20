@@ -2,8 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/ui/aceternity/button";
+import { appButtonClass } from "@/components/ui/app-button";
+import { FormAlert } from "@/components/ui/form-alert";
 import { Input, Label, Select } from "@/components/ui/aceternity/input";
+import { Spinner } from "@/components/ui/spinner";
+import { track } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 
 type Props = {
   defaultName: string;
@@ -39,21 +43,18 @@ export function OnboardingForm({ defaultName }: Props) {
         const body = await res.json().catch(() => null);
         throw new Error(body?.error ?? "Gagal menyimpan onboarding");
       }
+      track("onboarding_completed");
       router.push("/dashboard");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Gagal menyimpan");
-    } finally {
       setLoading(false);
     }
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="mt-8 space-y-4 rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)]"
-    >
-      <div className="space-y-1">
+    <form onSubmit={onSubmit} className="mt-6 space-y-4">
+      <div className="space-y-1.5">
         <Label htmlFor="name">Nama tampilan</Label>
         <Input
           id="name"
@@ -61,9 +62,10 @@ export function OnboardingForm({ defaultName }: Props) {
           onChange={(e) => setDisplayName(e.target.value)}
           required
           minLength={1}
+          autoComplete="name"
         />
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="locale">Bahasa UI</Label>
         <Select
           id="locale"
@@ -74,7 +76,7 @@ export function OnboardingForm({ defaultName }: Props) {
           <option value="en">English</option>
         </Select>
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="country">Negara default ranking</Label>
         <Input
           id="country"
@@ -82,9 +84,13 @@ export function OnboardingForm({ defaultName }: Props) {
           onChange={(e) => setCountry(e.target.value.toUpperCase())}
           maxLength={2}
           required
+          aria-describedby="country-hint"
         />
+        <p id="country-hint" className="text-xs text-text-muted">
+          Kode ISO 2 huruf, contoh ID
+        </p>
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="device">Device ranking default</Label>
         <Select
           id="device"
@@ -95,10 +101,20 @@ export function OnboardingForm({ defaultName }: Props) {
           <option value="MOBILE">Mobile</option>
         </Select>
       </div>
-      {error ? <p className="text-sm text-critical">{error}</p> : null}
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? "Menyimpan…" : "Selesai"}
-      </Button>
+      <FormAlert>{error}</FormAlert>
+      <button
+        type="submit"
+        disabled={loading}
+        className={cn(appButtonClass("primary"), "w-full")}
+      >
+        {loading ? (
+          <>
+            <Spinner /> Menyimpan…
+          </>
+        ) : (
+          "Selesai"
+        )}
+      </button>
     </form>
   );
 }

@@ -1,25 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import {
-  IconChartBar,
-  IconHistory,
-  IconLayoutDashboard,
-  IconRadar2,
-  IconSettings,
-  IconShield,
-} from "@tabler/icons-react";
 import { redirect } from "next/navigation";
+import { SidebarNav } from "@/components/app/sidebar-nav";
 import { syncLocalUser } from "@/lib/api/server";
 
-const nav = [
-  { href: "/dashboard", label: "Dashboard", icon: IconLayoutDashboard },
-  { href: "/scans", label: "Scans", icon: IconRadar2 },
-  { href: "/history", label: "History", icon: IconHistory },
-  { href: "/rank-trackers", label: "Rank Tracker", icon: IconChartBar },
-  { href: "/account", label: "Account", icon: IconSettings },
-  { href: "/admin", label: "Admin", icon: IconShield },
-];
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardLayout({
   children,
@@ -58,40 +46,25 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-full bg-background md:flex">
-      <aside className="relative border-b border-border-subtle bg-surface md:sticky md:top-0 md:h-screen md:w-64 md:border-b-0 md:border-r">
+      <aside className="relative border-b border-border-subtle bg-surface/80 md:sticky md:top-0 md:h-screen md:w-60 md:border-b-0 md:border-r md:border-white/[0.06]">
         <div className="relative px-4 py-5">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-semibold tracking-tight"
+            className="flex items-center gap-2.5 text-sm font-semibold tracking-tight"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#0F4C75] text-xs font-bold text-[#BBE1FA]">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0F4C75] text-xs font-bold text-[#BBE1FA]">
               K
             </span>
             Klarr Rank
           </Link>
-          <p className="mt-1 truncate text-xs text-text-muted">{label}</p>
+          <p className="mt-2 truncate rounded-full border border-white/[0.06] bg-background/60 px-2.5 py-1 text-xs text-text-muted">
+            {label}
+          </p>
         </div>
-        <nav className="relative flex gap-1 overflow-x-auto px-2 pb-4 md:flex-col md:pb-6">
-          {nav.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-surface-raised hover:text-text-primary"
-              >
-                <Icon className="h-4 w-4 shrink-0 text-text-muted" />
-                {item.label}
-              </Link>
-            );
-          })}
-          <LogoutLink className="rounded-xl px-3 py-2 text-sm text-text-secondary transition hover:bg-surface-raised hover:text-text-primary">
-            Logout
-          </LogoutLink>
-        </nav>
+        <SidebarNav />
       </aside>
-      <main className="relative flex-1 px-4 py-6 md:px-8">
-        <div className="relative z-10">{children}</div>
+      <main className="relative flex-1 px-4 py-6 md:px-8 md:py-8">
+        <div className="relative z-10 mx-auto max-w-6xl">{children}</div>
       </main>
     </div>
   );

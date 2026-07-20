@@ -1,7 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { appButtonClass } from "@/components/ui/app-button";
+import { FormAlert } from "@/components/ui/form-alert";
+import { Spinner } from "@/components/ui/spinner";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { track } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 
 type AiResponse = {
   summary?: string;
@@ -61,15 +67,23 @@ type ScanDetail = {
 export function ScanReport({ scan }: { scan: ScanDetail }) {
   const router = useRouter();
   const [reanalyzing, setReanalyzing] = useState(false);
+  const [reanalyzeError, setReanalyzeError] = useState<string | null>(null);
   const meta = scan.artifact?.metadata ?? {};
   const failed = scan.issues.filter((i) => i.status === "FAIL");
   const ai = scan.ai?.response;
   const aiFailed =
-    scan.status === "COMPLETED_WITH_AI_ERROR" ||
-    scan.ai?.status === "FAILED";
+    scan.status === "COMPLETED_WITH_AI_ERROR" || scan.ai?.status === "FAILED";
+
+  useEffect(() => {
+    track("report_viewed", {
+      scan_id: scan.id,
+      status: scan.status,
+    });
+  }, [scan.id, scan.status]);
 
   async function reanalyze() {
     setReanalyzing(true);
+    setReanalyzeError(null);
     try {
       const res = await fetch(`/api/scans/${scan.id}/reanalyze`, {
         method: "POST",
@@ -79,8 +93,10 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
         throw new Error(body?.error ?? "Gagal reanalyze");
       }
       router.refresh();
-    } catch {
-      // keep technical report visible
+    } catch (err) {
+      setReanalyzeError(
+        err instanceof Error ? err.message : "Gagal reanalyze",
+      );
     } finally {
       setReanalyzing(false);
     }
@@ -89,7 +105,7 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
   return (
     <div className="space-y-6">
       {aiFailed ? (
-        <div className="rounded-2xl border border-warning/40 bg-surface p-4 text-sm">
+        <SurfaceCard className="border-warning/30 p-4 text-sm">
           <p className="font-medium text-warning">AI summary tidak tersedia</p>
           <p className="mt-1 text-text-secondary">
             Laporan teknis tetap lengkap.
@@ -99,24 +115,33 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
             type="button"
             onClick={reanalyze}
             disabled={reanalyzing}
-            className="mt-3 rounded-lg border border-border px-3 py-1.5 text-sm font-medium disabled:opacity-60"
+            className={cn(appButtonClass("secondary"), "mt-3")}
           >
-            {reanalyzing ? "Memproses…" : "Coba AI lagi"}
+            {reanalyzing ? (
+              <>
+                <Spinner /> Memproses…
+              </>
+            ) : (
+              "Coba AI lagi"
+            )}
           </button>
-        </div>
+          <FormAlert className="mt-2">{reanalyzeError}</FormAlert>
+        </SurfaceCard>
       ) : null}
 
       {ai?.summary ? (
-        <section className="rounded-2xl border border-border bg-surface p-5">
+        <SurfaceCard as="section" className="p-5 md:p-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-semibold">Ringkasan AI</h2>
             {ai.overallAssessment ? (
-              <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+              <span className="rounded-full bg-secondary/15 px-2.5 py-0.5 text-xs font-medium text-secondary">
                 {ai.overallAssessment}
               </span>
             ) : null}
           </div>
-          <p className="mt-3 text-sm leading-relaxed">{ai.summary}</p>
+          <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+            {ai.summary}
+          </p>
           {ai.strengths && ai.strengths.length > 0 ? (
             <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-text-secondary">
               {ai.strengths.map((s) => (
@@ -127,13 +152,13 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
           {ai.priorityActions && ai.priorityActions.length > 0 ? (
             <div className="mt-5 space-y-3">
               <h3 className="text-sm font-semibold">Prioritas perbaikan</h3>
-              <ol className="space-y-3">
+              <ol className="space-y-2.5">
                 {ai.priorityActions.map((action) => (
                   <li
                     key={`${action.priority}-${action.issueCode}-${action.title}`}
-                    className="rounded-xl border border-border p-3"
+                    className="rounded-xl border border-white/[0.06] border-l-2 border-l-accent bg-background p-3.5"
                   >
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-text-secondary">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-text-muted">
                       <span className="font-semibold text-text-primary">
                         #{action.priority}
                       </span>
@@ -144,7 +169,7 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
                     <p className="mt-1 text-sm text-text-secondary">
                       {action.recommendation}
                     </p>
-                    <p className="mt-1 text-xs text-text-secondary">
+                    <p className="mt-1 text-xs text-text-muted">
                       Dampak: {action.impact}
                     </p>
                   </li>
@@ -153,9 +178,9 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
             </div>
           ) : null}
           {ai.disclaimer ? (
-            <p className="mt-4 text-xs text-text-secondary">{ai.disclaimer}</p>
+            <p className="mt-4 text-xs text-text-muted">{ai.disclaimer}</p>
           ) : null}
-        </section>
+        </SurfaceCard>
       ) : null}
 
       <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -165,15 +190,12 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
           ["Accessibility", scan.accessibilityScore],
           ["Best Practices", scan.bestPracticesScore],
         ].map(([label, score]) => (
-          <div
-            key={String(label)}
-            className="rounded-2xl border border-border bg-surface p-4"
-          >
+          <SurfaceCard key={String(label)} className="p-4">
             <p className="text-sm text-text-secondary">{label}</p>
-            <p className="mt-1 text-2xl font-semibold tabular-nums">
+            <p className="mt-1 text-2xl font-semibold tabular-nums tracking-tight">
               {score ?? "—"}
             </p>
-          </div>
+          </SurfaceCard>
         ))}
       </section>
 
@@ -184,19 +206,16 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
           ["Info", scan.infoCount, "text-info"],
           ["Passed", scan.passedCount, "text-success"],
         ].map(([label, count, tone]) => (
-          <div
-            key={String(label)}
-            className="rounded-2xl border border-border bg-surface p-4"
-          >
+          <SurfaceCard key={String(label)} className="p-4">
             <p className="text-sm text-text-secondary">{label}</p>
             <p className={`mt-1 text-xl font-semibold tabular-nums ${tone}`}>
               {count}
             </p>
-          </div>
+          </SurfaceCard>
         ))}
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-5">
+      <SurfaceCard as="section" className="p-5 md:p-6">
         <h2 className="font-semibold">Metadata</h2>
         <dl className="mt-3 grid gap-3 text-sm md:grid-cols-2">
           <MetaItem label="Title" value={String(meta.title ?? "—")} />
@@ -214,41 +233,56 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
           />
           <MetaItem label="Rule set" value={scan.ruleSetVersion} />
         </dl>
-        <p className="mt-4 text-xs text-text-secondary">
+        <p className="mt-4 text-xs text-text-muted">
           Skor adalah penilaian Klarr Rank, bukan faktor ranking Google.
         </p>
-      </section>
+      </SurfaceCard>
 
       <section className="space-y-3">
         <h2 className="font-semibold">Issues ({failed.length})</h2>
         {failed.length === 0 ? (
-          <p className="rounded-2xl border border-border bg-surface p-5 text-sm text-text-secondary">
+          <SurfaceCard className="p-5 text-sm text-text-secondary">
             Tidak ada issue gagal. Bagus.
-          </p>
+          </SurfaceCard>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-2.5">
             {failed.map((issue) => (
-              <li
-                key={issue.id}
-                className="rounded-2xl border border-border bg-surface p-4"
-              >
-                <div className="flex flex-wrap items-center gap-2">
-                  <Severity severity={issue.severity} />
-                  <span className="text-xs text-text-secondary">
-                    {issue.category}
-                  </span>
-                  <span className="text-xs text-text-secondary">
-                    {issue.ruleCode}
-                  </span>
-                </div>
-                <h3 className="mt-2 font-medium">{issue.title}</h3>
-                <p className="mt-1 text-sm text-text-secondary">
-                  {issue.description}
-                </p>
-                <p className="mt-2 text-sm">
-                  <span className="font-medium">Perbaikan: </span>
-                  {issue.technicalRecommendation}
-                </p>
+              <li key={issue.id}>
+                <SurfaceCard
+                  className="border-l-2 p-4"
+                  style={
+                    {
+                      borderLeftColor:
+                        issue.severity === "CRITICAL"
+                          ? "var(--critical)"
+                          : issue.severity === "WARNING"
+                            ? "var(--warning)"
+                            : "var(--info)",
+                    } as React.CSSProperties
+                  }
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Severity severity={issue.severity} />
+                    <span className="text-xs text-text-muted">
+                      {issue.category}
+                    </span>
+                    <span className="text-xs text-text-muted">
+                      {issue.ruleCode}
+                    </span>
+                  </div>
+                  <h3 className="mt-2 font-medium">{issue.title}</h3>
+                  <p className="mt-1 text-sm text-text-secondary">
+                    {issue.description}
+                  </p>
+                  <p className="mt-2 text-sm">
+                    <span className="font-medium text-text-primary">
+                      Perbaikan:{" "}
+                    </span>
+                    <span className="text-text-secondary">
+                      {issue.technicalRecommendation}
+                    </span>
+                  </p>
+                </SurfaceCard>
               </li>
             ))}
           </ul>
@@ -261,7 +295,7 @@ export function ScanReport({ scan }: { scan: ScanDetail }) {
 function MetaItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-text-secondary">{label}</dt>
+      <dt className="text-text-muted">{label}</dt>
       <dd className="mt-0.5 break-words font-medium">{value}</dd>
     </div>
   );

@@ -1,7 +1,11 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { appButtonClass } from "@/components/ui/app-button";
+import { PageHeader } from "@/components/ui/page-header";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
 import { AccountPreferencesForm } from "@/features/account/preferences-form";
+import { cn } from "@/lib/utils";
 
 type MeData = {
   displayName?: string | null;
@@ -53,44 +57,43 @@ export default async function AccountPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Akun</h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          Profil, preferensi, dan paket.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Account"
+        title="Akun"
+        description="Profil, preferensi, dan paket."
+      />
 
-      <section className="rounded-2xl border border-border bg-surface p-5">
+      <SurfaceCard as="section" className="p-5">
         <h2 className="font-semibold">Profil</h2>
-        <dl className="mt-3 space-y-2 text-sm">
+        <dl className="mt-3 space-y-2.5 text-sm">
           <div className="flex justify-between gap-4">
-            <dt className="text-text-secondary">Nama</dt>
+            <dt className="text-text-muted">Nama</dt>
             <dd className="font-medium">
               {me?.displayName || kindeUser?.given_name || "—"}
             </dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-text-secondary">Email</dt>
+            <dt className="text-text-muted">Email</dt>
             <dd className="font-medium">
               {me?.email || kindeUser?.email || "—"}
             </dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-text-secondary">Plan</dt>
+            <dt className="text-text-muted">Plan</dt>
             <dd className="font-medium">
               {me?.subscription?.planCode ?? usage?.planCode ?? "FREE"}
             </dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-text-secondary">Status langganan</dt>
+            <dt className="text-text-muted">Status langganan</dt>
             <dd className="font-medium">
               {me?.subscription?.status ?? "FREE"}
             </dd>
           </div>
         </dl>
-      </section>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border bg-surface p-5">
+      <SurfaceCard as="section" className="p-5">
         <h2 className="font-semibold">Kuota</h2>
         <ul className="mt-3 space-y-2 text-sm text-text-secondary">
           <li>
@@ -103,9 +106,9 @@ export default async function AccountPage() {
             {usage?.entitlements.keywordLimit ?? "—"}
           </li>
         </ul>
-      </section>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border bg-surface p-5">
+      <SurfaceCard as="section" className="p-5">
         <h2 className="font-semibold">Preferensi</h2>
         <AccountPreferencesForm
           defaults={{
@@ -116,17 +119,17 @@ export default async function AccountPage() {
             theme: me?.preference?.theme ?? "SYSTEM",
           }}
         />
-      </section>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border bg-surface p-5">
+      <SurfaceCard as="section" className="p-5">
         <h2 className="font-semibold">Keamanan</h2>
         <p className="mt-2 text-sm text-text-secondary">
           Login dikelola oleh Kinde. Logout mengakhiri sesi aplikasi.
         </p>
-        <LogoutLink className="mt-4 inline-flex rounded-lg border border-border px-4 py-2 text-sm font-medium">
+        <LogoutLink className={cn(appButtonClass("secondary"), "mt-4")}>
           Logout
         </LogoutLink>
-      </section>
+      </SurfaceCard>
     </div>
   );
 }

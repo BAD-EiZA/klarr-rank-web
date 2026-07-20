@@ -1,8 +1,12 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
-import { HoverBorderGradient } from "@/components/ui/aceternity/hover-border-gradient";
+import { appButtonClass } from "@/components/ui/app-button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHeader } from "@/components/ui/page-header";
 import { StatCard } from "@/components/ui/aceternity/stat-card";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
+import { cn } from "@/lib/utils";
 
 type Summary = {
   planCode: string;
@@ -51,6 +55,7 @@ export default async function DashboardPage() {
     domain: string | null;
     items: PriorityIssue[];
   } = { scanId: null, domain: null, items: [] };
+  let dataUnavailable = false;
 
   try {
     const [s, r, p] = await Promise.all([
@@ -70,32 +75,23 @@ export default async function DashboardPage() {
     recent = r.data.items;
     priority = p.data;
   } catch {
-    // offline / auth edge
+    dataUnavailable = true;
   }
 
   const empty = summary?.isEmpty ?? recent.length === 0;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <HoverBorderGradient as="div" className="mb-3 text-xs">
-            Overview
-          </HoverBorderGradient>
-          <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
-            Halo{user?.given_name ? `, ${user.given_name}` : ""}
-          </h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            Ringkasan kuota, scan, dan isu prioritas.
-          </p>
-        </div>
-        <Link
-          href="/scans"
-          className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground shadow-sm"
-        >
-          Scan baru
-        </Link>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Overview"
+        title={`Halo${user?.given_name ? `, ${user.given_name}` : ""}`}
+        description="Ringkasan kuota, scan, dan isu prioritas."
+        action={
+          <Link href="/scans" className={appButtonClass("primary")}>
+            Scan baru
+          </Link>
+        }
+      />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Plan" value={summary?.planCode ?? "—"} />
@@ -124,23 +120,24 @@ export default async function DashboardPage() {
         />
       </div>
 
-      {empty ? (
-        <div className="rounded-2xl border border-border bg-surface p-10 text-center shadow-[var(--shadow)]">
-          <h2 className="text-lg font-semibold">Mulai audit pertama</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-text-secondary">
-            Masukkan URL publik untuk skor SEO, performance, accessibility, dan
-            rekomendasi prioritas.
-          </p>
-          <Link
-            href="/scans"
-            className="mt-5 inline-flex rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground"
-          >
-            Jalankan audit
-          </Link>
-        </div>
+      {dataUnavailable ? (
+        <EmptyState
+          title="Data belum dimuat"
+          description="API offline atau sesi belum siap. Coba refresh halaman."
+        />
+      ) : empty ? (
+        <EmptyState
+          title="Mulai audit pertama"
+          description="Masukkan URL publik untuk skor SEO, performance, accessibility, dan rekomendasi prioritas."
+          action={
+            <Link href="/scans" className={cn(appButtonClass("primary"))}>
+              Jalankan audit
+            </Link>
+          }
+        />
       ) : (
         <div className="grid gap-4 lg:grid-cols-2">
-          <section className="rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)]">
+          <SurfaceCard as="section" className="p-5">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold">Scan terbaru</h2>
               <Link
@@ -150,16 +147,16 @@ export default async function DashboardPage() {
                 Lihat semua
               </Link>
             </div>
-            <ul className="mt-4 divide-y divide-border">
+            <ul className="mt-4 divide-y divide-border-subtle">
               {recent.map((scan) => (
                 <li key={scan.id}>
                   <Link
                     href={`/scans/${scan.id}`}
-                    className="flex items-center justify-between gap-3 py-3 text-sm transition hover:opacity-80"
+                    className="flex items-center justify-between gap-3 py-3 text-sm transition hover:opacity-90"
                   >
                     <div>
                       <p className="font-medium">{scan.domain}</p>
-                      <p className="text-xs text-text-secondary">{scan.status}</p>
+                      <p className="text-xs text-text-muted">{scan.status}</p>
                     </div>
                     <span className="tabular-nums font-semibold">
                       {scan.overallScore ?? "—"}
@@ -168,9 +165,9 @@ export default async function DashboardPage() {
                 </li>
               ))}
             </ul>
-          </section>
+          </SurfaceCard>
 
-          <section className="rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)]">
+          <SurfaceCard as="section" className="p-5">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold">Isu prioritas</h2>
               {priority.scanId ? (
@@ -187,30 +184,36 @@ export default async function DashboardPage() {
                 Tidak ada critical/warning di scan terakhir.
               </p>
             ) : (
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 space-y-2.5">
                 {priority.items.map((issue) => (
                   <li
                     key={issue.id}
-                    className="rounded-xl border border-border bg-background p-3 text-sm"
+                    className="rounded-xl border border-white/[0.06] border-l-2 bg-background p-3 text-sm"
+                    style={{
+                      borderLeftColor:
+                        issue.severity === "CRITICAL"
+                          ? "var(--critical)"
+                          : "var(--warning)",
+                    }}
                   >
                     <span
                       className={
                         issue.severity === "CRITICAL"
-                          ? "text-critical"
-                          : "text-warning"
+                          ? "text-xs font-semibold text-critical"
+                          : "text-xs font-semibold text-warning"
                       }
                     >
                       {issue.severity}
                     </span>
-                    <p className="font-medium">{issue.title}</p>
-                    <p className="text-xs text-text-secondary">
+                    <p className="mt-0.5 font-medium">{issue.title}</p>
+                    <p className="text-xs text-text-muted">
                       {issue.ruleCode} · {issue.category}
                     </p>
                   </li>
                 ))}
               </ul>
             )}
-          </section>
+          </SurfaceCard>
         </div>
       )}
     </div>

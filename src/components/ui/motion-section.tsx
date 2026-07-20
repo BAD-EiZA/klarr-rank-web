@@ -3,7 +3,8 @@
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const ease = [0.22, 1, 0.36, 1] as const;
+/** Skill spring: cubic-bezier(0.32, 0.72, 0, 1) */
+export const springEase = [0.32, 0.72, 0, 1] as const;
 
 export function MotionSection({
   className,
@@ -14,10 +15,10 @@ export function MotionSection({
   return (
     <motion.section
       className={cn(className)}
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 48 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.55, ease, delay }}
+      transition={{ duration: 0.8, ease: springEase, delay }}
       {...props}
     >
       {children}
@@ -34,10 +35,10 @@ export function MotionDiv({
   return (
     <motion.div
       className={cn(className)}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 36 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, ease, delay }}
+      transition={{ duration: 0.75, ease: springEase, delay }}
       {...props}
     >
       {children}
@@ -48,7 +49,7 @@ export function MotionDiv({
 export function StaggerChildren({
   className,
   children,
-  stagger = 0.08,
+  stagger = 0.1,
 }: {
   className?: string;
   children: React.ReactNode;
@@ -83,11 +84,11 @@ export function StaggerItem({
     <motion.div
       className={className}
       variants={{
-        hidden: { opacity: 0, y: 16 },
+        hidden: { opacity: 0, y: 28 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.45, ease },
+          transition: { duration: 0.7, ease: springEase },
         },
       }}
     >

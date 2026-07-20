@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
 import { TrackerActions } from "@/features/rank-tracker/tracker-actions";
 
@@ -59,24 +60,27 @@ export default async function RankTrackerDetailPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-text-secondary">
-            <Link href="/rank-trackers" className="hover:text-text-primary">
+          <p className="text-sm text-text-muted">
+            <Link
+              href="/rank-trackers"
+              className="hover:text-text-primary hover:underline"
+            >
               Rank Tracker
             </Link>{" "}
             / {tracker.keyword}
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight">
+          <h1 className="mt-1.5 text-2xl font-semibold tracking-tight md:text-3xl">
             {tracker.keyword}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary">
+          <p className="mt-1.5 text-sm text-text-secondary">
             {tracker.normalizedDomain} · {tracker.countryCode}/
             {tracker.languageCode} · {tracker.device}
           </p>
         </div>
         <div className="text-right">
-          <p className="text-3xl font-semibold tabular-nums">
+          <p className="text-3xl font-semibold tabular-nums tracking-tight">
             {tracker.displayPosition}
           </p>
           <p className="text-sm text-text-secondary">{tracker.movement}</p>
@@ -97,30 +101,27 @@ export default async function RankTrackerDetailPage({
               : "—",
           ],
         ].map(([label, value]) => (
-          <div
-            key={String(label)}
-            className="rounded-2xl border border-border bg-surface p-4"
-          >
+          <SurfaceCard key={String(label)} className="p-4">
             <p className="text-sm text-text-secondary">{label}</p>
             <p className="mt-1 font-semibold tabular-nums">{value}</p>
-          </div>
+          </SurfaceCard>
         ))}
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-5">
+      <SurfaceCard as="section" className="p-5">
         <h2 className="font-semibold">Riwayat posisi</h2>
         {history.length === 0 ? (
           <p className="mt-3 text-sm text-text-secondary">
             Belum ada riwayat. Tunggu cek pertama selesai.
           </p>
         ) : (
-          <ul className="mt-3 divide-y divide-border text-sm">
+          <ul className="mt-3 divide-y divide-border-subtle text-sm">
             {history.map((h) => (
               <li
                 key={h.id}
                 className="flex items-center justify-between py-2"
               >
-                <span className="text-text-secondary">
+                <span className="text-text-muted">
                   {h.checkedAt
                     ? new Date(h.checkedAt).toLocaleString("id-ID")
                     : "—"}
@@ -132,11 +133,11 @@ export default async function RankTrackerDetailPage({
             ))}
           </ul>
         )}
-      </section>
+      </SurfaceCard>
 
-      <section className="rounded-2xl border border-border bg-surface p-5">
+      <SurfaceCard as="section" className="p-5">
         <h2 className="font-semibold">Kompetitor organik (snapshot)</h2>
-        <p className="mt-1 text-xs text-text-secondary">
+        <p className="mt-1 text-xs text-text-muted">
           Bukan selalu kompetitor bisnis langsung.
         </p>
         {!tracker.latestCheck?.competitors?.length ? (
@@ -146,13 +147,13 @@ export default async function RankTrackerDetailPage({
             {tracker.latestCheck.competitors.map((c) => (
               <li
                 key={c.id}
-                className="flex items-start justify-between gap-3 border-b border-border pb-2"
+                className="flex items-start justify-between gap-3 border-b border-border-subtle pb-2 last:border-0"
               >
                 <div className="min-w-0">
                   <p className="font-medium">
                     #{c.position} {c.domain}
                   </p>
-                  <p className="truncate text-xs text-text-secondary">
+                  <p className="truncate text-xs text-text-muted">
                     {c.resultTitle}
                   </p>
                 </div>
@@ -160,7 +161,7 @@ export default async function RankTrackerDetailPage({
             ))}
           </ul>
         )}
-      </section>
+      </SurfaceCard>
     </div>
   );
 }

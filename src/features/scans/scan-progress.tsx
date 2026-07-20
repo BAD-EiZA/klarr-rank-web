@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { MultiStepLoader } from "@/components/ui/aceternity/multi-step-loader";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { track } from "@/lib/analytics";
 
 const STEPS = [
   "QUEUED",
@@ -52,6 +54,11 @@ export function ScanProgress({
           next === "COMPLETED_WITH_AI_ERROR" ||
           next === "FAILED"
         ) {
+          if (next === "FAILED") {
+            track("scan_failed", { scan_id: scanId });
+          } else {
+            track("scan_completed", { scan_id: scanId, status: next });
+          }
           router.refresh();
           return;
         }
@@ -74,7 +81,7 @@ export function ScanProgress({
   }, [status]);
 
   return (
-    <div className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow)]">
+    <SurfaceCard className="p-6">
       <h2 className="font-semibold">Memproses audit…</h2>
       <p className="mt-1 text-sm text-text-secondary">
         Status aktual: {LABELS[status] ?? status}
@@ -86,6 +93,6 @@ export function ScanProgress({
           loadingStates={STEPS.map((s) => ({ text: LABELS[s] ?? s }))}
         />
       </div>
-    </div>
+    </SurfaceCard>
   );
 }

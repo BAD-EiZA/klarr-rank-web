@@ -1,7 +1,11 @@
 import Link from "next/link";
+import { appButtonClass } from "@/components/ui/app-button";
+import { PageHeader } from "@/components/ui/page-header";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
 import { AdminUserActions } from "@/features/admin/admin-user-actions";
 import { AdminJobActions } from "@/features/admin/admin-job-actions";
+import { cn } from "@/lib/utils";
 
 type AdminUser = {
   id: string;
@@ -30,7 +34,9 @@ export default async function AdminPage() {
 
   try {
     const [u, j] = await Promise.all([
-      serverApiFetch<ApiEnvelope<{ items: AdminUser[] }>>("/admin/users?take=50"),
+      serverApiFetch<ApiEnvelope<{ items: AdminUser[] }>>(
+        "/admin/users?take=50",
+      ),
       serverApiFetch<ApiEnvelope<{ items: Job[] }>>("/admin/jobs?take=30"),
     ]);
     users = u.data.items;
@@ -44,15 +50,14 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Admin</h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          User, suspend, dan job retry. Butuh permission admin di Kinde.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Admin"
+        title="Admin"
+        description="User, suspend, dan job retry. Butuh permission admin di Kinde."
+      />
 
       {error ? (
-        <div className="rounded-2xl border border-warning/40 bg-surface p-5 text-sm">
+        <SurfaceCard className="border-warning/30 p-5 text-sm">
           <p className="font-medium text-warning">Tidak bisa memuat admin</p>
           <p className="mt-1 text-text-secondary">{error}</p>
           <p className="mt-2 text-text-secondary">
@@ -66,26 +71,26 @@ export default async function AdminPage() {
           </p>
           <Link
             href="/dashboard"
-            className="mt-3 inline-flex text-sm font-medium text-accent"
+            className={cn(appButtonClass("secondary"), "mt-3")}
           >
             Kembali ke dashboard
           </Link>
-        </div>
+        </SurfaceCard>
       ) : (
         <>
           <section className="space-y-3">
             <h2 className="font-semibold">Users</h2>
-            <ul className="divide-y divide-border rounded-2xl border border-border bg-surface">
+            <SurfaceCard as="ul" className="divide-y divide-border-subtle">
               {users.map((u) => (
                 <li
                   key={u.id}
-                  className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-2 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
                     <p className="font-medium">
                       {u.displayName || u.email || u.id}
                     </p>
-                    <p className="text-xs text-text-secondary">
+                    <p className="text-xs text-text-muted">
                       {u.email} · {u.planCode} · {u.status} · scans {u.scans} ·
                       trackers {u.trackers}
                     </p>
@@ -93,22 +98,22 @@ export default async function AdminPage() {
                   <AdminUserActions userId={u.id} status={u.status} />
                 </li>
               ))}
-            </ul>
+            </SurfaceCard>
           </section>
 
           <section className="space-y-3">
             <h2 className="font-semibold">Jobs</h2>
-            <ul className="divide-y divide-border rounded-2xl border border-border bg-surface">
+            <SurfaceCard as="ul" className="divide-y divide-border-subtle">
               {jobs.map((job) => (
                 <li
                   key={job.id}
-                  className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-2 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
                     <p className="font-medium">
                       {job.jobType} · {job.status}
                     </p>
-                    <p className="text-xs text-text-secondary">
+                    <p className="text-xs text-text-muted">
                       {job.resourceId} · attempts {job.attempts} ·{" "}
                       {new Date(job.createdAt).toLocaleString("id-ID")}
                     </p>
@@ -123,7 +128,7 @@ export default async function AdminPage() {
                   Belum ada job.
                 </li>
               ) : null}
-            </ul>
+            </SurfaceCard>
           </section>
         </>
       )}

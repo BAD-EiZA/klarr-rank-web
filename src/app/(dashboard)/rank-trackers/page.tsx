@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHeader } from "@/components/ui/page-header";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
 import { CreateTrackerForm } from "@/features/rank-tracker/create-tracker-form";
 import { TrackerActions } from "@/features/rank-tracker/tracker-actions";
@@ -28,33 +31,29 @@ export default async function RankTrackersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Rank Tracker</h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          Pantau posisi organik Google (top 50). Free: cek otomatis 7 hari ·
-          Pro: harian.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Rank"
+        title="Rank Tracker"
+        description="Pantau posisi organik Google (top 50). Free: cek otomatis 7 hari · Pro: harian."
+      />
 
       <CreateTrackerForm />
 
       {items.length === 0 ? (
-        <div className="rounded-2xl border border-border bg-surface p-8 text-center">
-          <p className="font-medium">Belum ada keyword</p>
-          <p className="mt-1 text-sm text-text-secondary">
-            Tambah keyword + domain target untuk mulai tracking.
-          </p>
-        </div>
+        <EmptyState
+          title="Belum ada keyword"
+          description="Tambah keyword + domain target di form di atas untuk mulai tracking."
+        />
       ) : (
-        <ul className="divide-y divide-border rounded-2xl border border-border bg-surface">
+        <SurfaceCard as="ul" className="divide-y divide-border-subtle">
           {items.map((t) => (
             <li
               key={t.id}
-              className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between"
             >
               <Link href={`/rank-trackers/${t.id}`} className="min-w-0 flex-1">
                 <p className="font-medium">{t.keyword}</p>
-                <p className="text-xs text-text-secondary">
+                <p className="text-xs text-text-muted">
                   {t.normalizedDomain} · {t.countryCode} · {t.device} ·{" "}
                   {t.status}
                 </p>
@@ -80,7 +79,7 @@ export default async function RankTrackersPage() {
               </div>
             </li>
           ))}
-        </ul>
+        </SurfaceCard>
       )}
     </div>
   );

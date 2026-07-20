@@ -1,7 +1,12 @@
 import Link from "next/link";
+import { appButtonClass } from "@/components/ui/app-button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHeader } from "@/components/ui/page-header";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { serverApiFetch, type ApiEnvelope } from "@/lib/api/server";
 import { HistoryFilters } from "@/features/history/history-filters";
 import { ScanRowActions } from "@/features/history/scan-row-actions";
+import { cn } from "@/lib/utils";
 
 type ScanSummary = {
   id: string;
@@ -46,14 +51,11 @@ export default async function HistoryPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Riwayat audit
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          Cari, filter, buka ulang, atau hapus laporan.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="History"
+        title="Riwayat audit"
+        description="Cari, filter, buka ulang, atau hapus laporan."
+      />
 
       <HistoryFilters
         q={q}
@@ -64,31 +66,28 @@ export default async function HistoryPage({
       />
 
       {items.length === 0 ? (
-        <div className="rounded-2xl border border-border bg-surface p-8 text-center">
-          <p className="font-medium">Belum ada hasil</p>
-          <p className="mt-1 text-sm text-text-secondary">
-            Ubah filter atau jalankan audit baru.
-          </p>
-          <Link
-            href="/scans"
-            className="mt-4 inline-flex rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground"
-          >
-            Scan baru
-          </Link>
-        </div>
+        <EmptyState
+          title="Belum ada hasil"
+          description="Ubah filter atau jalankan audit baru."
+          action={
+            <Link href="/scans" className={cn(appButtonClass("primary"))}>
+              Scan baru
+            </Link>
+          }
+        />
       ) : (
-        <ul className="divide-y divide-border rounded-2xl border border-border bg-surface">
+        <SurfaceCard as="ul" className="divide-y divide-border-subtle">
           {items.map((scan) => (
             <li
               key={scan.id}
-              className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between"
             >
               <Link href={`/scans/${scan.id}`} className="min-w-0 flex-1">
                 <p className="font-medium">{scan.domain}</p>
-                <p className="truncate text-xs text-text-secondary">
+                <p className="truncate text-xs text-text-muted">
                   {scan.normalizedUrl}
                 </p>
-                <p className="mt-1 text-xs text-text-secondary">
+                <p className="mt-1 text-xs text-text-muted">
                   {new Date(scan.createdAt).toLocaleString("id-ID")} ·{" "}
                   {scan.status}
                 </p>
@@ -97,7 +96,7 @@ export default async function HistoryPage({
                 <span className="text-lg font-semibold tabular-nums">
                   {scan.overallScore ?? "—"}
                 </span>
-                <span className="text-xs text-text-secondary">
+                <span className="text-xs text-text-muted">
                   C{scan.criticalCount} · W{scan.warningCount}
                 </span>
                 <ScanRowActions
@@ -108,7 +107,7 @@ export default async function HistoryPage({
               </div>
             </li>
           ))}
-        </ul>
+        </SurfaceCard>
       )}
     </div>
   );

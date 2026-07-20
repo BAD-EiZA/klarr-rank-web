@@ -2,8 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/ui/aceternity/button";
+import { appButtonClass } from "@/components/ui/app-button";
+import { FormAlert } from "@/components/ui/form-alert";
 import { Input, Label } from "@/components/ui/aceternity/input";
+import { Spinner } from "@/components/ui/spinner";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { track } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 
 export function CreateScanForm() {
   const router = useRouter();
@@ -27,6 +32,7 @@ export function CreateScanForm() {
       }
       const id = body?.data?.id as string | undefined;
       if (!id) throw new Error("Scan id tidak ditemukan");
+      track("scan_started", { scan_id: id });
       router.push(`/scans/${id}`);
       router.refresh();
     } catch (err) {
@@ -37,28 +43,40 @@ export function CreateScanForm() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)]"
-    >
-      <Label htmlFor="scan-url">URL halaman</Label>
-      <div className="mt-2 flex flex-col gap-3 sm:flex-row">
-        <Input
-          id="scan-url"
-          placeholder="https://example.com"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          required
-          minLength={3}
-        />
-        <Button type="submit" disabled={loading} className="shrink-0 sm:w-36">
-          {loading ? "Memulai…" : "Scan"}
-        </Button>
-      </div>
-      <p className="mt-2 text-xs text-text-secondary">
-        Contoh: example.com · hanya HTTP/HTTPS publik
-      </p>
-      {error ? <p className="mt-2 text-sm text-critical">{error}</p> : null}
-    </form>
+    <SurfaceCard as="div" className="p-5 md:p-6">
+      <form onSubmit={onSubmit}>
+        <Label htmlFor="scan-url">URL halaman</Label>
+        <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+          <Input
+            id="scan-url"
+            type="url"
+            inputMode="url"
+            placeholder="https://example.com"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            required
+            minLength={3}
+            className="h-11 rounded-full"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className={cn(appButtonClass("primary"), "shrink-0 sm:min-w-[8.5rem]")}
+          >
+            {loading ? (
+              <>
+                <Spinner /> Memulai…
+              </>
+            ) : (
+              "Scan"
+            )}
+          </button>
+        </div>
+        <p className="mt-2 text-xs text-text-muted">
+          Contoh: example.com · hanya HTTP/HTTPS publik
+        </p>
+        <FormAlert className="mt-2">{error}</FormAlert>
+      </form>
+    </SurfaceCard>
   );
 }

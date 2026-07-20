@@ -2,8 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/ui/aceternity/button";
+import { appButtonClass } from "@/components/ui/app-button";
+import { FormAlert } from "@/components/ui/form-alert";
 import { Input, Label, Select } from "@/components/ui/aceternity/input";
+import { Spinner } from "@/components/ui/spinner";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { track } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 
 export function CreateTrackerForm() {
   const router = useRouter();
@@ -32,6 +37,7 @@ export function CreateTrackerForm() {
       });
       const body = await res.json().catch(() => null);
       if (!res.ok) throw new Error(body?.error ?? "Gagal membuat tracker");
+      track("rank_tracker_created", { tracker_id: body.data.id });
       router.push(`/rank-trackers/${body.data.id}`);
       router.refresh();
     } catch (err) {
@@ -41,51 +47,63 @@ export function CreateTrackerForm() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="grid gap-3 rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow)] sm:grid-cols-2"
-    >
-      <div className="space-y-1 sm:col-span-2">
-        <Label>Keyword</Label>
-        <Input
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          required
-          placeholder="jasa seo jakarta"
-        />
-      </div>
-      <div className="space-y-1 sm:col-span-2">
-        <Label>Target URL / domain</Label>
-        <Input
-          value={targetUrl}
-          onChange={(e) => setTargetUrl(e.target.value)}
-          required
-          placeholder="https://example.com"
-        />
-      </div>
-      <div className="space-y-1">
-        <Label>Negara</Label>
-        <Input
-          value={countryCode}
-          maxLength={2}
-          onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
-        />
-      </div>
-      <div className="space-y-1">
-        <Label>Device</Label>
-        <Select value={device} onChange={(e) => setDevice(e.target.value)}>
-          <option value="DESKTOP">Desktop</option>
-          <option value="MOBILE">Mobile</option>
-        </Select>
-      </div>
-      {error ? (
-        <p className="text-sm text-critical sm:col-span-2">{error}</p>
-      ) : null}
-      <div className="sm:col-span-2">
-        <Button type="submit" disabled={loading}>
-          {loading ? "Menyimpan…" : "Tambah tracker"}
-        </Button>
-      </div>
-    </form>
+    <SurfaceCard className="p-5 md:p-6">
+      <form onSubmit={onSubmit} className="grid gap-3 sm:grid-cols-2">
+        <div className="space-y-1 sm:col-span-2">
+          <Label>Keyword</Label>
+          <Input
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            required
+            placeholder="jasa seo jakarta"
+          />
+        </div>
+        <div className="space-y-1 sm:col-span-2">
+          <Label>Target URL / domain</Label>
+          <Input
+            value={targetUrl}
+            onChange={(e) => setTargetUrl(e.target.value)}
+            required
+            placeholder="https://example.com"
+          />
+        </div>
+        <div className="space-y-1">
+          <Label>Negara</Label>
+          <Input
+            value={countryCode}
+            maxLength={2}
+            onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label>Device</Label>
+          <Select
+            value={device}
+            onChange={(e) => setDevice(e.target.value)}
+          >
+            <option value="DESKTOP">Desktop</option>
+            <option value="MOBILE">Mobile</option>
+          </Select>
+        </div>
+        <div className="sm:col-span-2">
+          <FormAlert>{error}</FormAlert>
+        </div>
+        <div className="sm:col-span-2">
+          <button
+            type="submit"
+            disabled={loading}
+            className={cn(appButtonClass("primary"))}
+          >
+            {loading ? (
+              <>
+                <Spinner /> Menyimpan…
+              </>
+            ) : (
+              "Tambah tracker"
+            )}
+          </button>
+        </div>
+      </form>
+    </SurfaceCard>
   );
 }
